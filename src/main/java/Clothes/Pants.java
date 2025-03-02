@@ -8,6 +8,7 @@ public class Pants {
     private String color;
     private String fit;
     private String length;
+    private double price;
 
 
     public Pants() {
@@ -67,5 +68,13 @@ public class Pants {
 
     public void setLength(String length) {
         this.length = length;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

@@ -8,6 +8,7 @@ public class TShirt {
     private String color;
     private String sleeves;
     private String neck;
+    private double price;
 
     public TShirt() {
     }
@@ -66,5 +67,13 @@ public class TShirt {
 
     public void setNeck(String neck) {
         this.neck = neck;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
