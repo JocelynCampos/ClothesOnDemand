@@ -5,13 +5,8 @@ public class Customer {
     private String name;
     private String address;
     private String mail;
-    private static int idCounter = 1;
 
-    public Customer (String name, String address, String mail) {
-        this.name = name;
-        this.id = idCounter++;
-        this.address = address;
-        this.mail = mail;
+    public Customer () {
     }
 
     public int getId() {
@@ -46,11 +41,4 @@ public class Customer {
         this.mail = mail;
     }
 
-    public static int getIdCounter() {
-        return idCounter;
-    }
-
-    public static void setIdCounter(int idCounter) {
-        Customer.idCounter = idCounter;
-    }
 }
