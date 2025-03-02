@@ -1,15 +1,17 @@
-package Clothes;
+package models;
 
-public class TShirt {
+public class Pants {
     private int id;
     private String name;
     private String size;
     private String material;
     private String color;
-    private String sleeves;
-    private String neck;
+    private String fit;
+    private String length;
+    private double price;
 
-    public TShirt() {
+
+    public Pants() {
     }
 
     public int getId() {
@@ -52,19 +54,27 @@ public class TShirt {
         this.color = color;
     }
 
-    public String getSleeves() {
-        return sleeves;
+    public String getFit() {
+        return fit;
     }
 
-    public void setSleeves(String sleeves) {
-        this.sleeves = sleeves;
+    public void setFit(String fit) {
+        this.fit = fit;
     }
 
-    public String getNeck() {
-        return neck;
+    public String getLength() {
+        return length;
     }
 
-    public void setNeck(String neck) {
-        this.neck = neck;
+    public void setLength(String length) {
+        this.length = length;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

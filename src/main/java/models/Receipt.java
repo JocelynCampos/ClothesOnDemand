@@ -1,4 +1,4 @@
-package BussinessObjects;
+package models;
 
 public class Receipt {
     private int id;

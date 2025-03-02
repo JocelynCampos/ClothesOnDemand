@@ -1,4 +1,4 @@
-package BussinessObjects;
+package models;
 
 public class Customer {
     private int id;
@@ -40,5 +40,7 @@ public class Customer {
     public void setMail(String mail) {
         this.mail = mail;
     }
+
+
 
 }

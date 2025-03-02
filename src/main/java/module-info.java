@@ -5,6 +5,6 @@ module org.example.clothesondemand {
 
     opens org.example.clothesondemand to javafx.fxml;
     exports org.example.clothesondemand;
-    exports BussinessObjects;
-    opens BussinessObjects to javafx.fxml;
+    exports models;
+    opens models to javafx.fxml;
 }

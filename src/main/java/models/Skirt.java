@@ -1,4 +1,4 @@
-package Clothes;
+package models;
 
 public class Skirt {
     private int id;
@@ -8,6 +8,7 @@ public class Skirt {
     private String color;
     private String waistline;
     private String pattern;
+    private double price;
 
     public Skirt() {
     }
@@ -66,5 +67,13 @@ public class Skirt {
 
     public void setPattern(String pattern) {
         this.pattern = pattern;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
