@@ -1,5 +1,9 @@
 package models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import enums.*;
+
 public class Skirt {
     private int id;
     private String name;
@@ -10,7 +14,14 @@ public class Skirt {
     private String pattern;
     private double price;
 
+    private PropertyChangeSupport propertyChangeSupport;
+
     public Skirt() {
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener (PropertyChangeListener listener) {
+        this.propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
     public int getId() {

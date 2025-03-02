@@ -1,5 +1,9 @@
 package models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import enums.*;
+
 public class Pants {
     private int id;
     private String name;
@@ -10,8 +14,15 @@ public class Pants {
     private String length;
     private double price;
 
+    private PropertyChangeSupport propertyChangeSupport;
+
 
     public Pants() {
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
     public int getId() {
@@ -50,8 +61,8 @@ public class Pants {
         return color;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColor(Enums.Color color) {
+        this.color = String.valueOf(color);
     }
 
     public String getFit() {
