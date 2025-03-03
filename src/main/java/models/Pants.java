@@ -2,16 +2,17 @@ package models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+
 import enums.*;
 
 public class Pants {
     private int id;
     private String name;
-    private String size;
-    private String material;
-    private String color;
-    private String fit;
-    private String length;
+    private Size size;
+    private Material material;
+    private Color color;
+    private Fit fit;
+    private Length length;
     private double price;
 
     private PropertyChangeSupport propertyChangeSupport;
@@ -25,66 +26,63 @@ public class Pants {
         this.propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
+
+
     public int getId() {
         return id;
     }
+    public String getName() {
+        return name;
+    }
+    public Size getSize() { return size; }
+    public Material getMaterial() {
+        return material;
+    }
+    public Color getColor() {
+        return color;
+    }
+    public Length getLength() {
+        return length;
+    }
+    public Fit getFit() { return fit; }
+    public double getPrice() { return price; }
 
     public void setId(int id) {
         this.id = id;
     }
-
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
+    public void setSize(Size size) {
+        Size oldSize = this.size;
         this.size = size;
+        propertyChangeSupport.firePropertyChange("size", oldSize, this.size);
     }
 
-    public String getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(String material) {
+    public void setMaterial(Material material) {
+        Material oldMaterial = this.material;
         this.material = material;
+        propertyChangeSupport.firePropertyChange("material", oldMaterial, this.material);
     }
 
-    public String getColor() {
-        return color;
+    public void setColor(Color color) {
+        Color oldColor = this.color;
+        this.color = color;
+        propertyChangeSupport.firePropertyChange("color", oldColor, this.color);
     }
 
-    public void setColor(Enums.Color color) {
-        this.color = String.valueOf(color);
-    }
-
-    public String getFit() {
-        return fit;
-    }
-
-    public void setFit(String fit) {
+    public void setFit(Fit fit) {
+        Fit oldFit = this.fit;
         this.fit = fit;
+        propertyChangeSupport.firePropertyChange("fit", oldFit, this.fit);
     }
 
-    public String getLength() {
-        return length;
-    }
-
-    public void setLength(String length) {
+    public void setLength(Length length) {
+        Length oldLength = this.length;
         this.length = length;
+        propertyChangeSupport.firePropertyChange("length", oldLength, this.length);
     }
-
-    public double getPrice() {
-        return price;
-    }
-
     public void setPrice(double price) {
         this.price = price;
     }

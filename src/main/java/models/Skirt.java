@@ -7,11 +7,11 @@ import enums.*;
 public class Skirt {
     private int id;
     private String name;
-    private String size;
-    private String material;
-    private String color;
-    private String waistline;
-    private String pattern;
+    private Size size;
+    private Material material;
+    private Color color;
+    private Waistline waistline;
+    private Pattern pattern;
     private double price;
 
     private PropertyChangeSupport propertyChangeSupport;
@@ -40,44 +40,55 @@ public class Skirt {
         this.name = name;
     }
 
-    public String getSize() {
+    public Size getSize() {
         return size;
+
     }
 
-    public void setSize(String size) {
+    public void setSize(Size size) {
+        Size oldSize = this.size;
         this.size = size;
+        propertyChangeSupport.firePropertyChange("size", oldSize, this.size);
     }
 
-    public String getMaterial() {
+    public Material getMaterial() {
         return material;
     }
 
-    public void setMaterial(String material) {
+    public void setMaterial(Material material) {
+        Material oldMaterial = this.material;
         this.material = material;
+        propertyChangeSupport.firePropertyChange("material", oldMaterial, this.material);
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
+        Color oldColor = this.color;
         this.color = color;
+        propertyChangeSupport.firePropertyChange("color", oldColor, this.color);
     }
 
-    public String getWaistline() {
+    public Waistline getWaistline() {
         return waistline;
     }
 
-    public void setWaistline(String waistline) {
+    public void setWaistline(Waistline waistline) {
+        Waistline oldWaistline = this.waistline;
         this.waistline = waistline;
+        propertyChangeSupport.firePropertyChange("material", oldWaistline, this.waistline);
     }
 
-    public String getPattern() {
+    public Pattern getPattern() {
         return pattern;
     }
 
-    public void setPattern(String pattern) {
+    public void setPattern(Pattern pattern) {
+        Pattern oldPattern = this.pattern;
         this.pattern = pattern;
+        propertyChangeSupport.firePropertyChange("pattern", oldPattern, this.pattern);
     }
 
     public double getPrice() {
