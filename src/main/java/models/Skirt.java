@@ -78,7 +78,7 @@ public class Skirt {
     public void setWaistline(Waistline waistline) {
         Waistline oldWaistline = this.waistline;
         this.waistline = waistline;
-        propertyChangeSupport.firePropertyChange("material", oldWaistline, this.waistline);
+        propertyChangeSupport.firePropertyChange("Waistline", oldWaistline, this.waistline);
     }
 
     public Pattern getPattern() {
