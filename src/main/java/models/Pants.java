@@ -35,8 +35,8 @@ public class Pants {
         return name;
     }
     public Size getSize() { return size; }
-    public Material getMaterial() {
-        return material;
+    public Material getMaterial(Material material) {
+        return this.material;
     }
     public Color getColor() {
         return color;

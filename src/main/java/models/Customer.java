@@ -1,12 +1,15 @@
 package models;
 
 public class Customer {
+    private static int idCounter;
     private int id;
     private String name;
     private String address;
     private String mail;
 
-    public Customer () {
+    public Customer (String name) {
+        this.name = name;
+        this.id = idCounter;
     }
 
     public int getId() {
