@@ -3,7 +3,7 @@ import enums.Color;
 import enums.Material;
 import enums.Size;
 
-public class ClothingBuilder {
+public abstract class ClothingBuilder {
     private Pants pants = new Pants();
     private TShirt tShirt = new TShirt();
     private Skirt skirt = new Skirt();
