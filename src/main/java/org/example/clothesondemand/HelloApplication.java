@@ -1,9 +1,7 @@
 package org.example.clothesondemand;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import models.ClothingBuilder;
 
 import java.io.IOException;
 
