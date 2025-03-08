@@ -1,7 +1,7 @@
 package models;
 
 public class Customer {
-    private static int idCounter;
+    private static int idCounter = 1;
     private int id;
     private String name;
     private String address;
@@ -9,7 +9,7 @@ public class Customer {
 
     public Customer (String name) {
         this.name = name;
-        this.id = idCounter;
+        this.id = idCounter++;
     }
 
     public int getId() {
