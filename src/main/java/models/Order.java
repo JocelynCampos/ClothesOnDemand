@@ -21,6 +21,7 @@ public class Order {
         this. pantsList = pants;
         this.tShirtList = tShirts;
         this.skirtList = skirts;
+        this.orderStatus = "Order created";
     }
 
     public void addObserver (PropertyChangeListener listener) {
@@ -28,24 +29,48 @@ public class Order {
     }
 
     public void placeOrder() {
-        String oldStatud = this.orderStatus;
-        this.orderStatus = "Clothing is being made: " + customer.getName();
+        String oldStatus = this.orderStatus;
+        this.orderStatus = "Clothing is being made for: " + customer.getName();
+
+        support.firePropertyChange("orderStatus", oldStatus, this.orderStatus);
     }
 
+    public void completedOrder(){
+        String oldStatus = this.orderStatus;
+        this.orderStatus = "Order ready for delivery: " + customer.getName();
 
-    public String getName() {
+        support.firePropertyChange("orderStatus", oldStatus, this.orderStatus);
+    }
+
+    public String getOrderStatus() {
         return orderStatus;
-    }
-
-    public void setName(Customer customer) {
-        this.customer = customer;
     }
 
     public int getId() {
         return id;
     }
 
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Order.counter = counter;
+    }
+
     public void setId(int id) {
         this.id = id;
+    }
+
+    public List<Pants> getPantsList() {
+        return pantsList;
+    }
+
+    public List<TShirt> gettShirtList() {
+        return tShirtList;
+    }
+
+    public List<Skirt> getSkirtList() {
+        return skirtList;
     }
 }
