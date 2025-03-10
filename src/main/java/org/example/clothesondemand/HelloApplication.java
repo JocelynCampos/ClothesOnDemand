@@ -53,12 +53,13 @@ public class HelloApplication extends Application {
 
         Button addPantsButton = new Button("Add pants");
         addPantsButton.setOnAction(actionEvent -> {
-            if (pantsSizeComboBox.getValue() != null && pantsMaterialComboBox != null &&
-                    pantsColorComboBox != null && pantsFitComboBox != null && pantsLengthComboBox != null) {
+            if (pantsSizeComboBox.getValue() != null && pantsMaterialComboBox.getValue() != null
+                    && pantsColorComboBox.getValue() != null && pantsFitComboBox.getValue() != null
+                    && pantsLengthComboBox.getValue() != null) {
                 Pants pant = new Pants();
                 order.getPantsList().add(pant);
             } else {
-                System.out.println("Please fill all the boxes before adding pants into your shoppingbag.");
+                System.out.println("Please fill all the boxes before adding a pair of pants into your shoppingbag.");
             }
         });
 
@@ -71,7 +72,14 @@ public class HelloApplication extends Application {
 
         Button addTshirtButton = new Button("Add T-Shirt");
         addTshirtButton.setOnAction(actionEvent -> {
-
+            if (tshirtSizeComboBox.getValue() != null && tshirtMaterialComboBox.getValue() != null
+                    && tshirtColorComboBox.getValue() != null && tshirtSleevesComboBox.getValue() != null
+                    && tshirtNeckComboBox.getValue() != null) {
+                TShirt tShirt = new TShirt();
+                order.gettShirtList().add(tShirt);
+            } else {
+                System.out.println("Please fill in all the boxes before adding a T-Shirt into your shopping bag.");
+            }
         });
 
 
@@ -79,8 +87,20 @@ public class HelloApplication extends Application {
         ComboBox<Size> skirtSizeComboBox = createSizeComboBox();
         ComboBox<Material> skirtMaterialComboBox = createMaterialComboBox();
         ComboBox<Color> skirtColorComboBox = createColorComboBox();
-        ComboBox<Waistline> waistlineComboBox = createWaistlineComboBox();
-        ComboBox<Pattern> patternComboBox = createPatternComboBox();
+        ComboBox<Waistline> skirtWaistlineComboBox = createWaistlineComboBox();
+        ComboBox<Pattern> skirtPatternComboBox = createPatternComboBox();
+
+        Button addSkirtButton = new Button("Add Skirt");
+        addSkirtButton.setOnAction(actionEvent -> {
+            if (skirtSizeComboBox.getValue() != null && skirtMaterialComboBox.getValue() != null
+            && skirtColorComboBox.getValue() != null && skirtWaistlineComboBox.getValue() != null
+            && skirtPatternComboBox.getValue() != null) {
+                Skirt skirt = new Skirt();
+                order.getSkirtList().add(skirt);
+            } else {
+                System.out.println("Please fill in all the boxes before adding a skirt into your shopping bag.");
+            }
+        });
 
 
         //Skapa new-order knapp
@@ -98,9 +118,9 @@ public class HelloApplication extends Application {
         });
 
         //Knappar
-        HBox buttonBox = new HBox(10, addToOrderButton, completeOrderButton);
+        HBox buttonBox = new HBox(10, addToOrderButton, completeOrderButton, addPantsButton, addTshirtButton, addSkirtButton);
 
-        VBox root = new VBox(20, orderStatusLabel, orderStatusLabel,buttonBox, pantsSizeComboBox, pantsMaterialComboBox, pantsColorComboBox);
+        VBox root = new VBox(20, orderStatusLabel, orderStatusLabel, buttonBox, pantsSizeComboBox, pantsMaterialComboBox, pantsColorComboBox);
 
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
