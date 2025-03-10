@@ -1,10 +1,10 @@
-package GarnmentBuilders;
+package GarmentBuilders;
 
 import enums.Pattern;
 import enums.Waistline;
 import models.Skirt;
 
-public class SkirtBuilder extends GarnmentBuilder {
+public class SkirtBuilder extends GarmentBuilder {
     private Waistline waistline;
     private Pattern pattern;
 

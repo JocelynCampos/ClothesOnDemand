@@ -3,7 +3,7 @@ import enums.Color;
 import enums.Material;
 import enums.Size;
 
-public abstract class Garnments {
+public abstract class Garments {
 
     private static int idCounter = 1;
     private int id;
@@ -12,7 +12,7 @@ public abstract class Garnments {
     protected Material material;
     protected Color color;
 
-    public Garnments(String name) {
+    public Garments(String name) {
         this.id = idCounter++;
         this.name = name;
     }
@@ -42,7 +42,7 @@ public abstract class Garnments {
     }
 
     public static void setIdCounter(int idCounter) {
-        Garnments.idCounter = idCounter;
+        Garments.idCounter = idCounter;
     }
 
     public int getId() {

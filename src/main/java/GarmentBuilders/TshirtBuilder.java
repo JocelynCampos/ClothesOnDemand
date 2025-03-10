@@ -1,10 +1,10 @@
-package GarnmentBuilders;
+package GarmentBuilders;
 
 import enums.Neck;
 import enums.Sleeves;
 import models.TShirt;
 
-public class TshirtBuilder extends GarnmentBuilder {
+public class TshirtBuilder extends GarmentBuilder {
     private Sleeves sleeves;
     private Neck neck;
 

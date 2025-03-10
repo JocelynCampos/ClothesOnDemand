@@ -2,7 +2,7 @@ package models;
 
 import enums.*;
 
-public class TShirt extends Garnments {
+public class TShirt extends Garments {
     private Sleeves sleeves;
     private Neck neck;
     private double price;

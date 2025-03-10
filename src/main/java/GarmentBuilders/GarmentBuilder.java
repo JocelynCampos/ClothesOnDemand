@@ -1,32 +1,32 @@
-package GarnmentBuilders;
+package GarmentBuilders;
 
 import enums.Color;
 import enums.Material;
 import enums.Size;
-import models.Garnments;
+import models.Garments;
 
-public abstract class GarnmentBuilder {
+public abstract class GarmentBuilder {
     protected Size size;
     protected Material material;
     protected Color color;
 
     //TODO validate Size
-    public GarnmentBuilder addSize (Size size) {
+    public GarmentBuilder addSize (Size size) {
         this.size = size;
         return this;
     }
 
     //TODO validate Material
-    public GarnmentBuilder addMaterial (Material material) {
+    public GarmentBuilder addMaterial (Material material) {
         this.material = material;
         return this;
     }
 
     //TODO validate Color
-    public GarnmentBuilder addColor (Color color) {
+    public GarmentBuilder addColor (Color color) {
         this.color = (color);
         return this;
     }
 
-    public abstract Garnments build();
+    public abstract Garments build();
 }
