@@ -36,12 +36,6 @@ public class HelloApplication extends Application {
         List<Skirt> skirts = List.of(new Skirt());
 
         TabPane tabPane = new TabPane();
-        Tab pantsTab = new Tab("Pants");
-        Tab tShirtTab = new Tab("T-Shirt");
-        Tab skirtTab = new Tab("Skirt");
-        Tab summaryTab = new Tab("Order Summary");
-
-        tabPane.getTabs().addAll(pantsTab, tShirtTab, skirtTab, summaryTab);
 
         //Skapar tom order
         order = new Order(customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -49,22 +43,17 @@ public class HelloApplication extends Application {
         //Label för orderstatus
         orderStatusLabel = new Label("Order status: " + order.getOrderStatus());
 
-        //Byxor
+        // BYXOR *************************************************************
         Label pantsLabel = new Label("Create pants");
-
-        //BYXOR : Storlek, Material, Färg, PassForm, Längd
+        //Storlek, Material, Färg, PassForm, Längd
         ComboBox<Size> pantsSizeComboBox = createSizeComboBox();
         pantsSizeComboBox.setVisible(false);
-
         ComboBox<Material> pantsMaterialComboBox = createMaterialComboBox();
         pantsMaterialComboBox.setVisible(false);
-
         ComboBox<Color> pantsColorComboBox = createColorComboBox();
         pantsColorComboBox.setVisible(false);
-
         ComboBox<Fit> pantsFitComboBox = createFitComboBox();
         pantsFitComboBox.setVisible(false);
-
         ComboBox<Length> pantsLengthComboBox = createLengthComboBox();
         pantsLengthComboBox.setVisible(false);
 
@@ -86,21 +75,22 @@ public class HelloApplication extends Application {
                 System.out.println("Please fill all the boxes before adding a pair of pants into your shoppingbag.");
             }
         });
+        VBox pantsSection = new VBox(20, pantsLabel, pantsSizeComboBox, pantsMaterialComboBox,
+                pantsColorComboBox, pantsFitComboBox, pantsLengthComboBox, addPantsButton);
+        Tab pantsTab = new Tab("Pants", pantsSection);
+
+        //T-Shirt ******************************************************
 
         Label tShirtLabel = new Label("Create T-Shirt");
-        //T-Shirt : Storlek, Material, Färg, Ärmar, Krage
+        // Storlek, Material, Färg, Ärmar, Krage
         ComboBox<Size> tshirtSizeComboBox = createSizeComboBox();
         tshirtSizeComboBox.setVisible(false);
-
         ComboBox<Material> tshirtMaterialComboBox = createMaterialComboBox();
         tshirtMaterialComboBox.setVisible(false);
-
         ComboBox<Color> tshirtColorComboBox = createColorComboBox();
         tshirtColorComboBox.setVisible(false);
-
         ComboBox<Sleeves>  tshirtSleevesComboBox = createSleevesComboBox();
         tshirtSleevesComboBox.setVisible(false);
-
         ComboBox<Neck> tshirtNeckComboBox= createNeckComboBox();
         tshirtNeckComboBox.setVisible(false);
 
@@ -123,20 +113,23 @@ public class HelloApplication extends Application {
             }
         });
 
+        VBox tShirtSection = new VBox(20, tShirtLabel, tshirtSizeComboBox, tshirtMaterialComboBox,
+                tshirtColorComboBox, tshirtSleevesComboBox, tshirtNeckComboBox, addTshirtButton);
+        Tab tShirtTab = new Tab("T-Shirt", tShirtSection);
+
+
+
+
         Label skirtLabel = new Label("Create skirt");
         // Skirt : Storlek, Material, Färg, Midja, Mönster
         ComboBox<Size> skirtSizeComboBox = createSizeComboBox();
         skirtSizeComboBox.setVisible(false);
-
         ComboBox<Material> skirtMaterialComboBox = createMaterialComboBox();
         skirtMaterialComboBox.setVisible(false);
-
         ComboBox<Color> skirtColorComboBox = createColorComboBox();
         skirtColorComboBox.setVisible(false);
-
         ComboBox<Waistline> skirtWaistlineComboBox = createWaistlineComboBox();
         skirtWaistlineComboBox.setVisible(false);
-
         ComboBox<Pattern> skirtPatternComboBox = createPatternComboBox();
         skirtPatternComboBox.setVisible(false);
 
@@ -160,6 +153,18 @@ public class HelloApplication extends Application {
         });
 
 
+        VBox skirtSection = new VBox(20, skirtLabel, skirtSizeComboBox, skirtMaterialComboBox,
+                skirtColorComboBox, skirtWaistlineComboBox, skirtPatternComboBox, addSkirtButton);
+
+        Tab skirtTab = new Tab("Skirt", skirtSection);
+
+
+
+
+
+        Tab summaryTab = new Tab("Order Summary");
+
+
         //Skapa new-order knapp
         Button placeOrderButton = new Button("Add to Order");
         placeOrderButton.setOnAction(actionEvent -> {
@@ -175,18 +180,13 @@ public class HelloApplication extends Application {
         });
 
         //Knappar
-        HBox buttonBox = new HBox(30, placeOrderButton, completeOrderButton, addPantsButton, addTshirtButton, addSkirtButton);
+        HBox buttonBox = new HBox(40, placeOrderButton, completeOrderButton, addPantsButton, addTshirtButton, addSkirtButton);
 
-        VBox pantsSection = new VBox(20, pantsLabel, pantsSizeComboBox, pantsMaterialComboBox,
-                pantsColorComboBox, pantsFitComboBox, pantsLengthComboBox, addPantsButton);
-        VBox tShirtSection = new VBox(20, tShirtLabel, tshirtSizeComboBox, tshirtMaterialComboBox,
-                tshirtColorComboBox, tshirtSleevesComboBox, tshirtNeckComboBox, addTshirtButton);
-        VBox skirtSection = new VBox(20, skirtLabel, skirtSizeComboBox, skirtMaterialComboBox,
-                skirtColorComboBox, skirtWaistlineComboBox, skirtPatternComboBox, addSkirtButton);
+        tabPane.getTabs().addAll(pantsTab, tShirtTab, skirtTab, summaryTab);
 
 
 
-        VBox root = new VBox(20, orderStatusLabel, buttonBox, pantsSection, tShirtSection, skirtSection);
+        VBox root = new VBox(40, orderStatusLabel, buttonBox, pantsSection, tShirtSection, skirtSection);
 
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
@@ -201,18 +201,21 @@ public class HelloApplication extends Application {
     public ComboBox<Size> createSizeComboBox() {
         ComboBox<Size> sizeComboBox = new ComboBox<>();
         sizeComboBox.getItems().addAll(Size.values());
+        sizeComboBox.setPromptText("Choose Size");
         return sizeComboBox;
     }
 
     public ComboBox<Material> createMaterialComboBox() {
         ComboBox<Material> materialComboBox = new ComboBox<>();
         materialComboBox.getItems().addAll(Material.values());
+        materialComboBox.setPromptText("Choose Material");
         return materialComboBox;
     }
 
     public ComboBox<Color> createColorComboBox() {
         ComboBox<Color> colorComboBox = new ComboBox<>();
         colorComboBox.getItems().addAll(Color.values());
+        colorComboBox.setPromptText("Choose Color");
         return colorComboBox;
     }
 
@@ -220,12 +223,14 @@ public class HelloApplication extends Application {
     public ComboBox<Fit> createFitComboBox() {
         ComboBox<Fit> fitComboBox = new ComboBox<>();
         fitComboBox.getItems().addAll(Fit.values());
+        fitComboBox.setPromptText("Choose Fit");
         return fitComboBox;
     }
 
     public ComboBox<Length> createLengthComboBox() {
         ComboBox<Length> lengthComboBox = new ComboBox<>();
         lengthComboBox.getItems().addAll(Length.values());
+        lengthComboBox.setPromptText("Choose Length");
         return lengthComboBox;
     }
 
@@ -234,12 +239,14 @@ public class HelloApplication extends Application {
     public ComboBox<Sleeves> createSleevesComboBox() {
         ComboBox<Sleeves> sleevesComboBox = new ComboBox<>();
         sleevesComboBox.getItems().addAll(Sleeves.values());
+        sleevesComboBox.setPromptText("Choose Sleeves");
         return sleevesComboBox;
     }
 
     public ComboBox<Neck> createNeckComboBox() {
         ComboBox<Neck> neckComboBox = new ComboBox<>();
         neckComboBox.getItems().addAll(Neck.values());
+        neckComboBox.setPromptText("Choose Neck");
         return neckComboBox;
     }
 
@@ -247,12 +254,14 @@ public class HelloApplication extends Application {
     public ComboBox<Waistline> createWaistlineComboBox() {
         ComboBox<Waistline> waistlineComboBox = new ComboBox<>();
         waistlineComboBox.getItems().addAll(Waistline.values());
+        waistlineComboBox.setPromptText("Choose Waistline");
         return waistlineComboBox;
     }
 
     public ComboBox<Pattern> createPatternComboBox() {
         ComboBox<Pattern> patternComboBox = new ComboBox<>();
         patternComboBox.getItems().addAll(Pattern.values());
+        patternComboBox.setPromptText("Choose Pattern");
         return patternComboBox;
     }
 
