@@ -1,11 +1,10 @@
-package GarnmentBuilders;
+package GarmentBuilders;
 
 import enums.Fit;
 import enums.Length;
-import models.Garnments;
 import models.Pants;
 
-public class PantBuilder extends GarnmentBuilder {
+public class PantBuilder extends GarmentBuilder {
     private Fit fit;
     private Length length;
 

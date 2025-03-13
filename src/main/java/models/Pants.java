@@ -1,7 +1,7 @@
 package models;
 import enums.*;
 
-public class Pants extends Garnments {
+public class Pants extends Garments {
     private Fit fit;
     private Length length;
     private double price;
@@ -32,5 +32,8 @@ public class Pants extends Garnments {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setMaterial(Material material) {
     }
 }
