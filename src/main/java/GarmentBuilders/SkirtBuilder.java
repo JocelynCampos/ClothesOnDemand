@@ -1,32 +1,36 @@
 package GarmentBuilders;
 
-import enums.Pattern;
-import enums.Waistline;
+import enums.*;
+import interfaces.BaseGarmentInterface;
+import interfaces.SkirtOptions;
 import models.Skirt;
 
-public class SkirtBuilder extends GarmentBuilder {
-    private Waistline waistline;
-    private Pattern pattern;
+public class SkirtBuilder implements BaseGarmentInterface, SkirtOptions {
 
-    public  SkirtBuilder setWaistline(Waistline waistline) {
-        this.waistline = waistline;
-        return this;
-    }
+    Skirt skirt = new Skirt();
 
-    public SkirtBuilder setPattern(Pattern pattern) {
-        this.pattern = pattern;
-        return this;
+    @Override
+    public void setSize(Size size) {
+        skirt.setSize(size);
     }
 
     @Override
-    public Skirt build() {
-        Skirt skirt = new Skirt();
-
-        skirt.setSize(size);
+    public void setMaterial(Material material) {
         skirt.setMaterial(material);
+    }
+
+    @Override
+    public void setColor(Color color) {
         skirt.setColor(color);
-        skirt.setWaistline(waistline);
-        skirt.setPattern(pattern);
-        return skirt;
+    }
+
+    @Override
+    public void setWaistline(Waistline waistline) {
+
+    }
+
+    @Override
+    public void setPattern(Pattern pattern) {
+
     }
 }

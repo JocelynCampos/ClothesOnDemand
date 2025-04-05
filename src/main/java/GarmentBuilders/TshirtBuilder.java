@@ -1,32 +1,35 @@
 package GarmentBuilders;
 
-import enums.Neck;
-import enums.Sleeves;
+import enums.*;
+import interfaces.BaseGarmentInterface;
+import interfaces.PantsOptions;
+import interfaces.TshirtOptions;
 import models.TShirt;
 
-public class TshirtBuilder extends GarmentBuilder {
-    private Sleeves sleeves;
-    private Neck neck;
+public class TshirtBuilder implements BaseGarmentInterface, TshirtOptions {
 
-    public TshirtBuilder setSleeves(Sleeves sleeves) {
-        this.sleeves = sleeves;
-        return this;
-    }
+    @Override
+    public void setSize(Size size) {
 
-    public TshirtBuilder setNeck(Neck neck) {
-        this.neck = neck;
-        return this;
     }
 
     @Override
-    public TShirt build() {
-        TShirt tShirt = new TShirt();
+    public void setMaterial(Material material) {
 
-        tShirt.setSize(size);
-        tShirt.setMaterial(material);
-        tShirt.setColor(color);
-        tShirt.setSleeves(sleeves);
-        tShirt.setNeck(neck);
-        return tShirt;
+    }
+
+    @Override
+    public void setColor(Color color) {
+
+    }
+
+    @Override
+    public void setSleeves(Sleeves sleeves) {
+
+    }
+
+    @Override
+    public void setNeck(Neck neck) {
+
     }
 }
