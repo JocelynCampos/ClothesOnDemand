@@ -27,11 +27,4 @@ public class Skirt extends Garments {
         this.pattern = pattern;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 }

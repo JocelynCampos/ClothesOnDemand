@@ -11,6 +11,7 @@ public abstract class Garments {
     protected Size size;
     protected Material material;
     protected Color color;
+    protected double price;
 
     public Garments(String name) {
         this.id = idCounter++;
@@ -26,8 +27,6 @@ public abstract class Garments {
 
     public Material getMaterial() {
         return material;
-    }
-    public void setMaterial() {
     }
 
     public Color getColor() {
@@ -61,7 +60,13 @@ public abstract class Garments {
         this.name = name;
     }
 
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void setMaterial(Material material) { this.material = material; }
+
+    public double getPrice() {
+        return price;
     }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
 }

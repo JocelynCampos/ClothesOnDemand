@@ -1,6 +1,7 @@
 package GarmentBuilders;
 
 import enums.*;
+import exception.InvalidGarmentException;
 import interfaces.BaseGarmentInterface;
 import interfaces.SkirtOptions;
 import models.Skirt;
@@ -26,11 +27,19 @@ public class SkirtBuilder implements BaseGarmentInterface, SkirtOptions {
 
     @Override
     public void setWaistline(Waistline waistline) {
-
+        skirt.setWaistline(waistline);
     }
 
     @Override
     public void setPattern(Pattern pattern) {
+        skirt.setPattern(pattern);
+    }
 
+    public Skirt getResult() {
+        if (skirt.getSize() == null || skirt.getMaterial() == null || skirt.getColor() == null
+        || skirt.getWaistline() == null || skirt.getPattern() == null) {
+            throw new InvalidGarmentException("All garments must have attributes");
+        }
+        return skirt;
     }
 }

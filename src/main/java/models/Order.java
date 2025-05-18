@@ -2,15 +2,18 @@ package models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
     private static int counter = 1;
     private int id;
     private Customer customer;
+
     private List<Pants> pantsList;
     private List<TShirt> tShirtList;
     private List<Skirt> skirtList;
+
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private String orderStatus;
@@ -42,8 +45,24 @@ public class Order {
         support.firePropertyChange("orderStatus", oldStatus, this.orderStatus);
     }
 
+    public List<Garments> getAllGarments() {
+        List<Garments> allGarments = new ArrayList<>();
+        allGarments.addAll(pantsList);
+        allGarments.addAll(tShirtList);
+        allGarments.addAll(skirtList);
+        return allGarments;
+    }
+
     public String getOrderStatus() {
         return orderStatus;
+    }
+
+    public Receipt createReceipt() {
+        Receipt receipt = new Receipt();
+        for (Garments garment: getAllGarments()) {
+            receipt.addGarment(garment);
+        }
+        return receipt;
     }
 
     public int getId() {
