@@ -34,6 +34,4 @@ public class Pants extends Garments {
         this.price = price;
     }
 
-    public void setMaterial(Material material) {
-    }
 }

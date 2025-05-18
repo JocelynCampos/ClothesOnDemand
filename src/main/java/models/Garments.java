@@ -27,8 +27,6 @@ public abstract class Garments {
     public Material getMaterial() {
         return material;
     }
-    public void setMaterial() {
-    }
 
     public Color getColor() {
         return color;
@@ -61,7 +59,6 @@ public abstract class Garments {
         this.name = name;
     }
 
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
+    public void setMaterial(Material material) { this.material = material; }
+
 }
