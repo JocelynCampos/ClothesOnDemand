@@ -62,19 +62,25 @@ public class OrderTest {
         //Skapa order
         Order order = new Order(customer, pantsList, tshirtList, skirtList);
 
+        //CEO
+        CEO ceo = new CEO();
+        order.addObserver(ceo);
+        order.completedOrder();
+
         //Skapa kvitto
         Receipt receipt = order.createReceipt();
 
         //Addera priserna
         double expectedTotalPrice = 500 + 900 + 1000;
         double total = 0;
-
         for (Garments garments : order.getAllGarments()) {
             total += garments.getPrice();
         }
 
         //Jämför summan
         Assertions.assertEquals(expectedTotalPrice, total);
+        Assertions.assertEquals(expectedTotalPrice, ceo.getTotalIncome());
+        Assertions.assertEquals(3, ceo.getAmountOfGarmentsSold());
 
     }
 }
