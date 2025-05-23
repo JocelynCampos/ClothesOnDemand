@@ -16,6 +16,14 @@ public class Order {
 
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
+    }
+
     private String orderStatus;
 
     public Order (Customer customer, List<Pants> pants, List<TShirt> tShirts, List<Skirt> skirts) {
@@ -25,10 +33,6 @@ public class Order {
         this.tShirtList = tShirts;
         this.skirtList = skirts;
         this.orderStatus = "Order created";
-    }
-
-    public void addObserver (PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
     }
 
     public void placeOrder() {
@@ -58,7 +62,7 @@ public class Order {
     }
 
     public Receipt createReceipt() {
-        Receipt receipt = new Receipt();
+        Receipt receipt = new Receipt(customer);
         for (Garments garment: getAllGarments()) {
             receipt.addGarment(garment);
         }

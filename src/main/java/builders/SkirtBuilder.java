@@ -1,4 +1,4 @@
-package GarmentBuilders;
+package builders;
 
 import enums.*;
 import exception.InvalidGarmentException;

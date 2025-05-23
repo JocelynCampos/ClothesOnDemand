@@ -42,7 +42,6 @@ public class HelloApplication extends Application {
         order = new Order(customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         CEO ceo = new CEO();
-        order.addObserver(ceo);
 
         //Label för orderstatus
         orderStatusLabel = new Label("Order status: " + order.getOrderStatus());
@@ -220,9 +219,11 @@ public class HelloApplication extends Application {
         tabPane.getTabs().addAll(pantsTab, tShirtTab, skirtTab, summaryTab);
 
 
-
-        VBox root = new VBox(40, orderStatusLabel, buttonBox, pantsSection, tShirtSection, skirtSection);
-
+        HBox garmentRow = new HBox(40, pantsSection, tShirtSection ,skirtSection);
+        VBox root = new VBox(40, orderStatusLabel, buttonBox, garmentRow);
+        pantsSection.setPrefWidth(WIDTH/3.2);
+        tShirtSection.setPrefWidth(WIDTH/3.2);
+        skirtSection.setPrefWidth(WIDTH/3.2);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setTitle("Clothes on Demand");

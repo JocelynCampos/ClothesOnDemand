@@ -2,6 +2,7 @@ package models;
 import enums.Color;
 import enums.Material;
 import enums.Size;
+import org.w3c.dom.ls.LSOutput;
 
 public abstract class Garments {
 
@@ -16,6 +17,10 @@ public abstract class Garments {
     public Garments(String name) {
         this.id = idCounter++;
         this.name = name;
+    }
+
+    public void printAttribute(String attribute, Object value) {
+        System.out.println(String.format("Clothing: %s - %s set to: %s", name, attribute, value));
     }
 
     public Size getSize() {
@@ -68,5 +73,6 @@ public abstract class Garments {
     public void setPrice(double price) {
         this.price = price;
     }
+
 
 }

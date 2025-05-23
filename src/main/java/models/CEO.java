@@ -11,8 +11,6 @@ public class CEO implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("*** CEO information ***");
-        System.out.println("Orderstatus: " + evt.getNewValue());
 
         if(evt.getNewValue().toString().contains("ready for delivery")) {
             Order order = (Order) evt.getSource();
@@ -25,10 +23,6 @@ public class CEO implements PropertyChangeListener {
                 orderTotal += garments1.getPrice();
             }
             totalIncome += orderTotal;
-
-            System.out.println("Order with " + garments + " garments. Total for order: " + orderTotal);
-            System.out.println("Amount of garments sold: " + amountOfGarmentsSold);
-            System.out.println("Total income: " + totalIncome + " kr.");
         }
     }
 
@@ -40,6 +34,13 @@ public class CEO implements PropertyChangeListener {
     public double getTotalIncome() {
         return totalIncome;
 
+    }
+
+    public void printSummary() {
+        System.out.println("***************ORDER SUMMARY************************");
+        System.out.println("Amount of garments sold: " + amountOfGarmentsSold);
+        System.out.println("Total income: " + totalIncome);
+        System.out.println("*************************************************\n");
     }
 }
 

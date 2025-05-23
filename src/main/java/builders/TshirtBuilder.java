@@ -1,10 +1,9 @@
-package GarmentBuilders;
+package builders;
 
 import enums.*;
 import exception.InvalidGarmentException;
 import interfaces.BaseGarmentInterface;
 import interfaces.TshirtOptions;
-import models.Skirt;
 import models.TShirt;
 
 public class TshirtBuilder implements BaseGarmentInterface, TshirtOptions {
