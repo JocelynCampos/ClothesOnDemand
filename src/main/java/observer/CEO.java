@@ -1,4 +1,7 @@
-package models;
+package observer;
+
+import models.Garments;
+import models.Order;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

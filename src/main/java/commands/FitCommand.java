@@ -4,21 +4,29 @@ import enums.Fit;
 import interfaces.GarmentCommand;
 import interfaces.PantsOptions;
 import models.Garments;
+import org.jetbrains.annotations.Nullable;
+
+import java.beans.PropertyChangeSupport;
 
 //For Pants
 public class FitCommand implements GarmentCommand {
     private final Fit fit;
+    private final PropertyChangeSupport pcs;
 
-    public FitCommand(Fit fit) {
+    public FitCommand(Fit fit, @Nullable PropertyChangeSupport pcs) {
         this.fit = fit;
+        this.pcs = pcs;
     }
 
     @Override
-    public void execute(Garments garments) {
-        if (garments instanceof PantsOptions pantsOptions) {
+    public void execute(Garments garment) {
+        if (garment instanceof PantsOptions pantsOptions) {
             pantsOptions.setFit(fit);
-            garments.printAttribute("Fit", fit);
+            garment.printAttribute("Fit", fit);
+            if (pcs != null) {
+                pcs.firePropertyChange("GarmentInProduction", null, garment);
+            }
         }
-
     }
+
 }
