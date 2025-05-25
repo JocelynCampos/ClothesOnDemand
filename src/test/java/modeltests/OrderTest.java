@@ -5,6 +5,7 @@ import builders.SkirtBuilder;
 import builders.TshirtBuilder;
 import enums.*;
 import models.*;
+import observer.CEO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

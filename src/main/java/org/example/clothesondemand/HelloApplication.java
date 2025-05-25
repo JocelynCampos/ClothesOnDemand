@@ -1,6 +1,5 @@
 package org.example.clothesondemand;
 
-import controllers.TrafficController;
 import enums.*;
 import enums.Color;
 import javafx.application.Application;
@@ -12,13 +11,10 @@ import models.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.AnchorPane;
+import observer.CEO;
 
-import java.awt.*;
 import java.awt.TextArea;
 import java.io.IOException;
-import java.security.Signature;
 import java.util.ArrayList;
 import java.util.List;
 
