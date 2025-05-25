@@ -11,6 +11,10 @@ import models.TShirt;
 import observer.CEO;
 import observer.CEOObserver;
 
+import commands.FitCommand;
+import commands.GarmentCommandPipeline;
+import enums.Fit;
+
 public class Main {
     public static void main (String [] args) {
 
@@ -47,5 +51,6 @@ public class Main {
         skirtPipeline.executeAll(skirt);
 
 
+        GarmentCommandPipeline produceGarmentPipeline = new GarmentCommandPipeline();
     }
 }
