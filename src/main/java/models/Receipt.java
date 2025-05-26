@@ -28,7 +28,7 @@ public class Receipt {
         }
         StringBuilder sb = new StringBuilder();
         double total = 0.0;
-        sb.append("Receipt for ").append(customer.getName()).append("\n");
+        sb.append("Receipt for: ").append(customer.getName()).append("\n");
 
         for (Map.Entry<String, List<Garments>> entry : orderedGarments.entrySet()) {
             String garmentName = entry.getKey();
@@ -50,7 +50,7 @@ public class Receipt {
             total += subtotal;
         }
         sb.append("\nTotal price for your purchase: ").append(total).append(" kr\n");
-        sb.append("\nThank you for your order!");
+        sb.append("Thank you for your order!");
         return sb.toString();
     }
 

@@ -11,7 +11,6 @@ public class CEOObserver implements PropertyChangeListener {
         switch (evt.getPropertyName()) {
             case "GarmentInProduction" -> System.out.println("CEO: Production started - " + evt.getNewValue());
             case "GarmentProduced" -> System.out.println("CEO: Production finished - " + evt.getNewValue());
-            default -> System.out.println("CEO: Unknown property " + evt.getPropertyName());
         }
     }
 
