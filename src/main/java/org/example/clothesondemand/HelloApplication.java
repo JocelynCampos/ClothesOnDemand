@@ -38,6 +38,7 @@ public class HelloApplication extends Application {
         //Skapar tom order
         order = new Order(customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
+
         //Label för orderstatus
         orderStatusLabel = new Label("Order status: " + order.getPlacedOrderStatus());
 
