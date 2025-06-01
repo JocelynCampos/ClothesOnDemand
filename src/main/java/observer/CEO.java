@@ -40,10 +40,10 @@ public class CEO implements PropertyChangeListener {
     }
 
     public void printSummary() {
-        System.out.println("***************ORDER SUMMARY************************");
+        System.out.println("******** Order Summary ********");
         System.out.println("Amount of garments sold: " + amountOfGarmentsSold);
         System.out.println("Total income: " + totalIncome);
-        System.out.println("*************************************************\n");
+        System.out.println("******** CEO INFORMATION FINISHED ********\n");
     }
 }
 

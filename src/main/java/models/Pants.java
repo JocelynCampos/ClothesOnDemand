@@ -26,5 +26,8 @@ public class Pants extends Garments {
         this.length = length;
     }
 
-
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

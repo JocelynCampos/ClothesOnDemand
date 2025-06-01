@@ -21,6 +21,9 @@ public class PatternCommand implements GarmentCommand {
     @Override
     public void execute(Garments garment) {
         if (garment instanceof SkirtOptions skirtOptions) {
+            if (pcs != null) {
+                pcs.firePropertyChange("GarmentInProduction", null, garment);
+            }
             skirtOptions.setPattern(pattern);
             garment.printAttribute("Pattern", pattern);
             if (pcs != null) {

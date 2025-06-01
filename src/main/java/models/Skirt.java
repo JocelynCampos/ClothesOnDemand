@@ -27,4 +27,8 @@ public class Skirt extends Garments {
         this.pattern = pattern;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

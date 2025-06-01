@@ -18,43 +18,27 @@ public class Receipt {
         itemsList.add(item);
     }
 
-    public String toString() {
+    public String getFormattedSummary() {
 
-        Map<String, List<Garments>> orderedGarments = new HashMap<>();
-        for (Garments garment: itemsList) {
-            String garmentName = garment.getName();
-            orderedGarments.putIfAbsent(garmentName, new ArrayList<>());
-            orderedGarments.get(garmentName).add(garment);
-        }
-        StringBuilder sb = new StringBuilder();
+        StringBuilder receiptString = new StringBuilder();
+
+        receiptString.append("********** RECEIPT **********\n");
+        receiptString.append("Customer: ").append(customer.getName()).append("\n");
+
         double total = 0.0;
-        sb.append("Receipt for: ").append(customer.getName()).append("\n");
-
-        for (Map.Entry<String, List<Garments>> entry : orderedGarments.entrySet()) {
-            String garmentName = entry.getKey();
-            List<Garments> garments = entry.getValue();
-            int garmentQuantity = garments.size();
-            double pricePerGarment = garments.get(0).getPrice();
-            double subtotal = garmentQuantity * pricePerGarment;
-
-            sb.append("\n")
-                    .append(garmentName)
-                    .append(" : " )
-                    .append(garmentQuantity)
-                    .append("\nPrice per item: ")
-                    .append(pricePerGarment)
-                    .append(" kr \n")
-                    .append("Subtotal: ")
-                    .append(subtotal)
-                    .append(" kr\n");
-            total += subtotal;
+        for (Garments item : itemsList) {
+            receiptString.append(String.format("%-10s: %.1f kr\n",
+                    item.getName(), item.getPrice()));
+            total += item.getPrice();
         }
-        sb.append("\nTotal price for your purchase: ").append(total).append(" kr\n");
-        sb.append("Thank you for your order!");
-        return sb.toString();
+
+        receiptString.append("Total price för your purchase: ").append(total).append(" kr\n");
+        receiptString.append("************************************");
+
+        return receiptString.toString();
     }
 
     public void printReceipt() {
-        System.out.println(toString());
+        System.out.println(getFormattedSummary());
     }
 }

@@ -22,6 +22,10 @@ public class LengthCommand implements GarmentCommand {
     public void execute(Garments garment) {
 
         if (garment instanceof PantsOptions pantsOptions) {
+            if (pcs != null) {
+                pcs.firePropertyChange("GarmentInProduction", null, garment);
+            }
+
             pantsOptions.setLength(length);
             garment.printAttribute("Length", length);
             if (pcs != null) {

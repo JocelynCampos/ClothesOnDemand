@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import observer.CEO;
 
-import java.awt.TextArea;
+import javafx.scene.control.TextArea;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class HelloApplication extends Application {
         CEO ceo = new CEO();
 
         //Label för orderstatus
-        orderStatusLabel = new Label("Order status: " + order.getOrderStatus());
+        orderStatusLabel = new Label("Order status: " + order.getPlacedOrderStatus());
 
         /*****************BYXOR*******************************************/
         Label pantsLabel = new Label("Create pants");
@@ -199,15 +199,18 @@ public class HelloApplication extends Application {
         Button placeOrderButton = new Button("Add to Order");
         placeOrderButton.setOnAction(actionEvent -> {
             order.placeOrder();
-            orderStatusLabel.setText("Order status" + order.getOrderStatus());
+            orderStatusLabel.setText("Order status" + order.getPlacedOrderStatus());
         });
 
         //Spara beställning knapp
         Button completeOrderButton = new Button("Complete order");
         completeOrderButton.setOnAction(actionEvent -> {
             order.completedOrder();
-            orderStatusLabel.setText("Order Status: " + order.getOrderStatus());
+            orderStatusLabel.setText("Order Status: " + order.getPlacedOrderStatus());
+            Receipt receipt = order.createReceipt();
+            summaryTextArea.setText(receipt.getFormattedSummary());
         });
+
 
         //Knappar
         HBox buttonBox = new HBox(40, placeOrderButton, completeOrderButton, addPantsButton, addTshirtButton, addSkirtButton);
@@ -216,7 +219,7 @@ public class HelloApplication extends Application {
 
 
         HBox garmentRow = new HBox(40, pantsSection, tShirtSection ,skirtSection);
-        VBox root = new VBox(40, orderStatusLabel, buttonBox, garmentRow);
+        VBox root = new VBox(40, orderStatusLabel, buttonBox, garmentRow, summaryTextArea);
         pantsSection.setPrefWidth(WIDTH/3.2);
         tShirtSection.setPrefWidth(WIDTH/3.2);
         skirtSection.setPrefWidth(WIDTH/3.2);

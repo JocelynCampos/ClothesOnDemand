@@ -21,10 +21,13 @@ public class NeckCommand implements GarmentCommand {
     @Override
     public void execute(Garments garment) {
         if (garment instanceof TshirtOptions tshirtOptions) {
+            if (pcs != null) {
+                pcs.firePropertyChange("GarmentInProduction", null, garment);
+            }
             tshirtOptions.setNeck(neck);
             garment.printAttribute("Neck", neck);
             if (pcs != null) {
-                pcs.firePropertyChange("GarmentInProduction", null, garment);
+                pcs.firePropertyChange("GarmentProduced", null, garment);
             }
         }
     }
