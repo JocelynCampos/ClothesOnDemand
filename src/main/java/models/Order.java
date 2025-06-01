@@ -2,6 +2,7 @@ package models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
@@ -39,7 +40,12 @@ public class Order {
         String oldStatus = this.orderStatus;
         this.orderStatus = "Order ready for delivery: " + customer.getName();
 
-        support.firePropertyChange("orderStatus", oldStatus, this.orderStatus);
+    public List<Garments> getAllGarments() {
+        List<Garments> allGarments = new ArrayList<>();
+        allGarments.addAll(pantsList);
+        allGarments.addAll(tShirtList);
+        allGarments.addAll(skirtList);
+        return allGarments;
     }
 
     public String getOrderStatus() {

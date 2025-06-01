@@ -1,6 +1,5 @@
 package org.example.clothesondemand;
 
-import controllers.TrafficController;
 import enums.*;
 import enums.Color;
 import javafx.application.Application;
@@ -15,9 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.*;
+import javafx.scene.control.TextArea;
 import java.io.IOException;
-import java.security.Signature;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +39,9 @@ public class HelloApplication extends Application {
         order = new Order(customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         //Label för orderstatus
-        orderStatusLabel = new Label("Order status: " + order.getOrderStatus());
+        orderStatusLabel = new Label("Order status: " + order.getPlacedOrderStatus());
 
-        // BYXOR *************************************************************
+        /*****************BYXOR*******************************************/
         Label pantsLabel = new Label("Create pants");
         //Storlek, Material, Färg, PassForm, Längd
         ComboBox<Size> pantsSizeComboBox = createSizeComboBox();
@@ -69,6 +67,13 @@ public class HelloApplication extends Application {
                     && pantsColorComboBox.getValue() != null && pantsFitComboBox.getValue() != null
                     && pantsLengthComboBox.getValue() != null) {
                 Pants pant = new Pants();
+                pant.setSize(pantsSizeComboBox.getValue());
+                pant.setMaterial(pantsMaterialComboBox.getValue());
+                pant.setColor(pantsColorComboBox.getValue());
+                pant.setFit(pantsFitComboBox.getValue());
+                pant.setLength(pantsLengthComboBox.getValue());
+                pant.setPrice(1200);
+
                 order.getPantsList().add(pant);
                 System.out.println("Pants added to the order!");
             } else {
@@ -79,7 +84,7 @@ public class HelloApplication extends Application {
                 pantsColorComboBox, pantsFitComboBox, pantsLengthComboBox, addPantsButton);
         Tab pantsTab = new Tab("Pants", pantsSection);
 
-        //T-Shirt ******************************************************
+        /************Tshirt*****************/
 
         Label tShirtLabel = new Label("Create T-Shirt");
         // Storlek, Material, Färg, Ärmar, Krage
@@ -106,6 +111,13 @@ public class HelloApplication extends Application {
                     && tshirtColorComboBox.getValue() != null && tshirtSleevesComboBox.getValue() != null
                     && tshirtNeckComboBox.getValue() != null) {
                 TShirt tShirt = new TShirt();
+                tShirt.setSize(tshirtSizeComboBox.getValue());
+                tShirt.setMaterial(tshirtMaterialComboBox.getValue());
+                tShirt.setColor(tshirtColorComboBox.getValue());
+                tShirt.setNeck(tshirtNeckComboBox.getValue());
+                tShirt.setSleeves(tshirtSleevesComboBox.getValue());
+                tShirt.setPrice(600);
+
                 order.gettShirtList().add(tShirt);
                 System.out.println("T-Shirt added to your order!");
             } else {
@@ -117,8 +129,7 @@ public class HelloApplication extends Application {
                 tshirtColorComboBox, tshirtSleevesComboBox, tshirtNeckComboBox, addTshirtButton);
         Tab tShirtTab = new Tab("T-Shirt", tShirtSection);
 
-
-
+        /**************Skirt******************/
 
         Label skirtLabel = new Label("Create skirt");
         // Skirt : Storlek, Material, Färg, Midja, Mönster
@@ -145,6 +156,13 @@ public class HelloApplication extends Application {
             && skirtColorComboBox.getValue() != null && skirtWaistlineComboBox.getValue() != null
             && skirtPatternComboBox.getValue() != null) {
                 Skirt skirt = new Skirt();
+                skirt.setSize(skirtSizeComboBox.getValue());
+                skirt.setMaterial(skirtMaterialComboBox.getValue());
+                skirt.setColor(skirtColorComboBox.getValue());
+                skirt.setWaistline(skirtWaistlineComboBox.getValue());
+                skirt.setPattern(skirtPatternComboBox.getValue());
+                skirt.setPrice(800);
+
                 order.getSkirtList().add(skirt);
                 System.out.println("Skirt added to your order.");
             } else {
@@ -159,25 +177,39 @@ public class HelloApplication extends Application {
         Tab skirtTab = new Tab("Skirt", skirtSection);
 
 
+        TextArea summaryTextArea = new TextArea();
+        summaryTextArea.setEditable(false);
 
+        Button showSummaryButton = new Button("Show summary");
+        showSummaryButton.setOnAction(actionEvent -> {
+            StringBuilder summary = new StringBuilder();
+            for (Garments garments : order.getAllGarments()) {
+                summary.append(garments.getName()).append(": ").append(garments.getPrice()).append("kr\n");
+            }
+            summaryTextArea.setText(summary.toString());
+        });
 
 
         Tab summaryTab = new Tab("Order Summary");
 
 
-        //Skapa new-order knapp
+
+        //Skapa newOrder knapp
         Button placeOrderButton = new Button("Add to Order");
         placeOrderButton.setOnAction(actionEvent -> {
             order.placeOrder();
-            orderStatusLabel.setText("Order status" + order.getOrderStatus());
+            orderStatusLabel.setText("Order status" + order.getPlacedOrderStatus());
         });
 
         //Spara beställning knapp
         Button completeOrderButton = new Button("Complete order");
         completeOrderButton.setOnAction(actionEvent -> {
             order.completedOrder();
-            orderStatusLabel.setText("Order Status: " + order.getOrderStatus());
+            orderStatusLabel.setText("Order Status: " + order.getPlacedOrderStatus());
+            Receipt receipt = order.createReceipt();
+            summaryTextArea.setText(receipt.getFormattedSummary());
         });
+
 
         //Knappar
         HBox buttonBox = new HBox(40, placeOrderButton, completeOrderButton, addPantsButton, addTshirtButton, addSkirtButton);
@@ -185,9 +217,11 @@ public class HelloApplication extends Application {
         tabPane.getTabs().addAll(pantsTab, tShirtTab, skirtTab, summaryTab);
 
 
-
-        VBox root = new VBox(40, orderStatusLabel, buttonBox, pantsSection, tShirtSection, skirtSection);
-
+        HBox garmentRow = new HBox(40, pantsSection, tShirtSection ,skirtSection);
+        VBox root = new VBox(40, orderStatusLabel, buttonBox, garmentRow, summaryTextArea);
+        pantsSection.setPrefWidth(WIDTH/3.2);
+        tShirtSection.setPrefWidth(WIDTH/3.2);
+        skirtSection.setPrefWidth(WIDTH/3.2);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setTitle("Clothes on Demand");

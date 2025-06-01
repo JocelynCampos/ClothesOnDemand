@@ -11,10 +11,15 @@ public abstract class Garments {
     protected Size size;
     protected Material material;
     protected Color color;
+    protected double price;
 
     public Garments(String name) {
         this.id = idCounter++;
         this.name = name;
+    }
+
+    public void printAttribute(String attribute, Object value) {
+        System.out.println(String.format("Clothing: %s - %s set to: %s", name, attribute, value));
     }
 
     public Size getSize() {
@@ -61,4 +66,15 @@ public abstract class Garments {
 
     public void setMaterial(Material material) { this.material = material; }
 
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return getName() + "ID: " + id;
+    }
 }
