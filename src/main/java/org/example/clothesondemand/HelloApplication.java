@@ -28,7 +28,6 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Customer customer = new Customer("Jocelyn");
         List<Pants> pants = List.of(new Pants());
         List<TShirt> tShirts = List.of(new TShirt());
         List<Skirt> skirts = List.of(new Skirt());
@@ -36,7 +35,7 @@ public class HelloApplication extends Application {
         TabPane tabPane = new TabPane();
 
         //Skapar tom order
-        order = new Order(customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        order = new Order(null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
 
         //Label för orderstatus
@@ -181,6 +180,38 @@ public class HelloApplication extends Application {
         TextArea summaryTextArea = new TextArea();
         summaryTextArea.setEditable(false);
 
+
+        Label nameLabel = new Label("Name");
+        TextField nameField = new TextField();
+        Label addressLabel = new Label("Address");
+        TextField addressField = new TextField();
+        Label mailLabel = new Label("Mail");
+        TextField mailField = new TextField();
+
+        Button saveCustomerButton = new Button("Save Customer");
+
+        saveCustomerButton.setOnAction(actionEvent -> {
+            String customerName = nameField.getText();
+            String customerAddress = addressField.getText();
+            String customerMail = mailField.getText();
+            if (!customerName.isEmpty() && !customerAddress.isEmpty() && !customerMail.isEmpty()) {
+                Customer customer = new Customer(customerName);
+                customer.setAddress(customerAddress);
+                customer.setMail(customerMail);
+
+                order.setCustomer(customer);
+
+                System.out.println("Customer: " + customer.getName() + " saved.");
+                System.out.println("Customers adress: " + customer.getAddress() + " mail: " + customer.getMail());
+            } else {
+                System.out.println("All fields need to be filed before proceeding.");
+            }
+        });
+
+        VBox customerSection = new VBox(10, nameLabel, nameField, addressLabel, addressField, mailLabel, mailField, saveCustomerButton);
+        Tab customerTab = new Tab("Customer information: ", customerSection);
+
+
         Button showSummaryButton = new Button("Show summary");
         showSummaryButton.setOnAction(actionEvent -> {
             StringBuilder summary = new StringBuilder();
@@ -190,9 +221,10 @@ public class HelloApplication extends Application {
             summaryTextArea.setText(summary.toString());
         });
 
+        VBox showSummarySection = new VBox(20,summaryTextArea, showSummaryButton);
 
-        Tab summaryTab = new Tab("Order Summary");
-
+        Tab summaryTab = new Tab("Order summary:", showSummarySection);
+        tabPane.getTabs().addAll(customerTab,pantsTab,tShirtTab,skirtTab,summaryTab);
 
 
         //Skapa newOrder knapp
@@ -215,11 +247,9 @@ public class HelloApplication extends Application {
         //Knappar
         HBox buttonBox = new HBox(40, placeOrderButton, completeOrderButton, addPantsButton, addTshirtButton, addSkirtButton);
 
-        tabPane.getTabs().addAll(pantsTab, tShirtTab, skirtTab, summaryTab);
 
+        VBox root = new VBox(40, orderStatusLabel, buttonBox, tabPane);
 
-        HBox garmentRow = new HBox(40, pantsSection, tShirtSection ,skirtSection);
-        VBox root = new VBox(40, orderStatusLabel, buttonBox, garmentRow, summaryTextArea);
         pantsSection.setPrefWidth(WIDTH/3.2);
         tShirtSection.setPrefWidth(WIDTH/3.2);
         skirtSection.setPrefWidth(WIDTH/3.2);

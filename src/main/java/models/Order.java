@@ -95,4 +95,8 @@ public class Order {
     public List<Skirt> getSkirtList() {
         return skirtList;
     }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }
