@@ -21,6 +21,9 @@ public class SleevesCommand implements GarmentCommand {
     @Override
     public void execute(Garments garment) {
         if (garment instanceof TshirtOptions tshirtOptions) {
+            if (pcs != null) {
+                pcs.firePropertyChange("GarmentInProduction", null, garment);
+            }
             tshirtOptions.setSleeves(sleeves);
             garment.printAttribute("Sleeves", sleeves);
             if (pcs != null) {

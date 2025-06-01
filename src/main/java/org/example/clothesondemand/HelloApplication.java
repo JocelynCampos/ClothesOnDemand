@@ -40,7 +40,7 @@ public class HelloApplication extends Application {
         CEO ceo = new CEO();
 
         //Label för orderstatus
-        orderStatusLabel = new Label("Order status: " + order.getOrderStatus());
+        orderStatusLabel = new Label("Order status: " + order.getPlacedOrderStatus());
 
         /*****************BYXOR*******************************************/
         Label pantsLabel = new Label("Create pants");
@@ -199,14 +199,14 @@ public class HelloApplication extends Application {
         Button placeOrderButton = new Button("Add to Order");
         placeOrderButton.setOnAction(actionEvent -> {
             order.placeOrder();
-            orderStatusLabel.setText("Order status" + order.getOrderStatus());
+            orderStatusLabel.setText("Order status" + order.getPlacedOrderStatus());
         });
 
         //Spara beställning knapp
         Button completeOrderButton = new Button("Complete order");
         completeOrderButton.setOnAction(actionEvent -> {
             order.completedOrder();
-            orderStatusLabel.setText("Order Status: " + order.getOrderStatus());
+            orderStatusLabel.setText("Order Status: " + order.getPlacedOrderStatus());
         });
 
         //Knappar

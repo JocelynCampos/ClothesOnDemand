@@ -22,10 +22,13 @@ public class WaistlineCommand implements GarmentCommand {
     @Override
     public void execute(Garments garment) {
         if (garment instanceof SkirtOptions skirtOptions) {
+            if (pcs != null) {
+                pcs.firePropertyChange("GarmentInProduction", null, garment);
+            }
             skirtOptions.setWaistline(waistline);
             garment.printAttribute("Waistline", waistline);
             if (pcs != null) {
-                pcs.firePropertyChange("GarmentInProduction", null, garment);
+                pcs.firePropertyChange("GarmentProduced", null, garment);
             }
         }
     }

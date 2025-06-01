@@ -21,10 +21,13 @@ public class FitCommand implements GarmentCommand {
     @Override
     public void execute(Garments garment) {
         if (garment instanceof PantsOptions pantsOptions) {
+            if (pcs != null) {
+                pcs.firePropertyChange("GarmentInProduction", null, garment);
+            }
             pantsOptions.setFit(fit);
             garment.printAttribute("Fit", fit);
             if (pcs != null) {
-                pcs.firePropertyChange("GarmentInProduction", null, garment);
+                pcs.firePropertyChange("GarmentProduced", null, garment);
             }
         }
     }

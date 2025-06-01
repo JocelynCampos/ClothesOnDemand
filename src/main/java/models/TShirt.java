@@ -27,4 +27,8 @@ public class TShirt extends Garments {
         this.neck = neck;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

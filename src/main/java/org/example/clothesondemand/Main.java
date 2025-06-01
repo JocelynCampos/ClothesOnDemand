@@ -4,7 +4,6 @@ package org.example.clothesondemand;
 import commands.*;
 import controllers.TrafficController;
 import enums.*;
-import interfaces.GarmentCommand;
 import models.*;
 import observer.CEO;
 import observer.CEOObserver;
@@ -22,6 +21,9 @@ public class Main {
 
         CEOObserver ceoObserver = new CEOObserver();
         trafficController.addPropertyChangeListener(ceoObserver);
+
+        CEO ceo = new CEO();
+        trafficController.addPropertyChangeListener(ceo);
 
         //Pants
         GarmentCommandPipeline pantsPipeline = new GarmentCommandPipeline();
@@ -59,7 +61,7 @@ public class Main {
         PatternCommand patternCommand1 = new PatternCommand(Pattern.STRIPE, trafficController.getPropertyChangeSupport());
         skirtPipeline2.addCommand(waistlineCommand1);
         skirtPipeline2.addCommand(patternCommand1);
-        skirtPipeline.executeAll(skirt2);
+        skirtPipeline2.executeAll(skirt2);
         skirt2.setPrice(800);
 
         Order order = new Order(
@@ -69,8 +71,10 @@ public class Main {
                 List.of(skirt, skirt2));
 
         order.addPropertyChangeListener(ceoObserver);
+        order.addPropertyChangeListener(ceo);
         order.placeOrder();
         order.completedOrder();
+        ceo.printSummary();
 
 
         Receipt receipt = order.createReceipt();
