@@ -14,7 +14,16 @@ public class Order {
     private List<Skirt> skirtList;
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private String orderStatus;
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
+    }
+
+    private String placedOrderStatus;
+    //private String finishedOrderStatus;
 
     public Order (Customer customer, List<Pants> pants, List<TShirt> tShirts, List<Skirt> skirts) {
         this.id = counter++;
@@ -22,23 +31,22 @@ public class Order {
         this. pantsList = pants;
         this.tShirtList = tShirts;
         this.skirtList = skirts;
-        this.orderStatus = "Order created";
-    }
-
-    public void addObserver (PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
+        this.placedOrderStatus = "Order Created";
     }
 
     public void placeOrder() {
-        String oldStatus = this.orderStatus;
-        this.orderStatus = "Clothing is being made for: " + customer.getName();
+        String oldStatus = this.placedOrderStatus;
+        this.placedOrderStatus = "Clothing is being made for: " + customer.getName();
 
-        support.firePropertyChange("orderStatus", oldStatus, this.orderStatus);
+        support.firePropertyChange("Placed Order", oldStatus, this.placedOrderStatus);
     }
 
     public void completedOrder(){
-        String oldStatus = this.orderStatus;
-        this.orderStatus = "Order ready for delivery: " + customer.getName();
+        String oldStatus = this.placedOrderStatus;
+        this.placedOrderStatus = "Order ready for delivery: " + customer.getName();
+
+        support.firePropertyChange("Finished Order", oldStatus, this.placedOrderStatus);
+    }
 
     public List<Garments> getAllGarments() {
         List<Garments> allGarments = new ArrayList<>();
@@ -48,8 +56,16 @@ public class Order {
         return allGarments;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public String getPlacedOrderStatus() {
+        return placedOrderStatus;
+    }
+
+    public Receipt createReceipt() {
+        Receipt receipt = new Receipt(customer);
+        for (Garments garment: getAllGarments()) {
+            receipt.addGarment(garment);
+        }
+        return receipt;
     }
 
     public int getId() {
