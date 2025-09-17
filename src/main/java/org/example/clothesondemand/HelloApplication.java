@@ -221,7 +221,7 @@ public class HelloApplication extends Application {
             summaryTextArea.setText(summary.toString());
         });
 
-        VBox showSummarySection = new VBox(10,summaryTextArea, showSummaryButton);
+        VBox showSummarySection = new VBox(20,summaryTextArea, showSummaryButton);
 
         Tab summaryTab = new Tab("Order summary:", showSummarySection);
         tabPane.getTabs().addAll(customerTab,pantsTab,tShirtTab,skirtTab,summaryTab);
