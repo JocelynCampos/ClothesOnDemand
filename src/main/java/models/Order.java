@@ -1,6 +1,5 @@
 package models;
 
-//import commands.GarmentCommandPipeline;
 import commands.GarmentCommandPipeline;
 import utilities.Events;
 
@@ -46,13 +45,17 @@ public class Order {
         pcs.firePropertyChange(Events.PLACED_ORDER, oldStatus, this.placedOrderStatus);
     }
 
-    public void produceGarment(Garments garment, GarmentCommandPipeline pipeline) {
+    public void producingGarment(Garments garment) {
         pcs.firePropertyChange(Events.PRODUCING_GARMENT, null, garment);
 
-        pipeline.executeAll(garment);
-        pipeline.clear();
+    }
 
+    public void garmentFinished(Garments garment, GarmentCommandPipeline pipeline) {
         pcs.firePropertyChange(Events.GARMENT_FINISHED, null, garment);
+        if (pipeline != null) {
+            pipeline.executeAll(garment);
+            pipeline.clear();
+        }
     }
 
     public void completedOrder(){

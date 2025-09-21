@@ -4,9 +4,6 @@ import enums.Sleeves;
 import interfaces.GarmentCommand;
 import interfaces.TshirtOptions;
 import models.Garments;
-import org.jetbrains.annotations.Nullable;
-
-import java.beans.PropertyChangeSupport;
 
 //For T-Shirt
 public class SleevesCommand implements GarmentCommand {
@@ -20,6 +17,8 @@ public class SleevesCommand implements GarmentCommand {
     public void execute(Garments garment) {
         if (garment instanceof TshirtOptions tshirtOptions) {
             tshirtOptions.setSleeves(sleeves);
+            garment.printAttribute("Sleeves", sleeves);
+
         }
     }
 }

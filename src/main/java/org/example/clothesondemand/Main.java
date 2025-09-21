@@ -1,3 +1,4 @@
+/**
 package org.example.clothesondemand;
 
 
@@ -76,3 +77,4 @@ public class Main {
         receipt.printReceipt();
     }
 }
+**/

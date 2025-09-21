@@ -4,9 +4,6 @@ import enums.Waistline;
 import interfaces.GarmentCommand;
 import interfaces.SkirtOptions;
 import models.Garments;
-import org.jetbrains.annotations.Nullable;
-
-import java.beans.PropertyChangeSupport;
 
 //For Skirt
 public class WaistlineCommand implements GarmentCommand {
@@ -21,6 +18,7 @@ public class WaistlineCommand implements GarmentCommand {
     public void execute(Garments garment) {
         if (garment instanceof SkirtOptions skirtOptions) {
             skirtOptions.setWaistline(waistline);
+            garment.printAttribute("Waistline", waistline);
         }
     }
 }

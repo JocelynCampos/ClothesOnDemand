@@ -17,6 +17,7 @@ public class FitCommand implements GarmentCommand {
     public void execute(Garments garment) {
         if (garment instanceof PantsOptions pantsOptions) {
             pantsOptions.setFit(fit);
+            garment.printAttribute("Fit", fit);
         }
     }
 

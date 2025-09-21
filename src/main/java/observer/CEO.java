@@ -29,12 +29,13 @@ public class CEO implements PropertyChangeListener {
                 case (Events.PRODUCING_GARMENT) -> {
                     Garments garmentBeingProduced = (Garments) evt.getNewValue();
                     System.out.println("Started a production of " + garmentBeingProduced.getName()
-                            + ":" + garmentBeingProduced.getId() + ", " + garmentBeingProduced.getSize() + ", " + garmentBeingProduced.getColor() + ", " + garmentBeingProduced.getMaterial() + ".");
+                            + ": " + garmentBeingProduced.getId() + ", " + garmentBeingProduced.getSize() + ", " + garmentBeingProduced.getColor() + ", " + garmentBeingProduced.getMaterial() + ".");
                 }
+
                 case (Events.GARMENT_FINISHED) -> {
                     Garments garmentBeingFinished = (Garments) evt.getNewValue();
                     System.out.println("Garment finished.");
-                    System.out.println("Total price: " + (int) garmentBeingFinished.getPrice() + " kr.");
+                    System.out.println("For the price of: " + (int) garmentBeingFinished.getPrice() + " kr.");
 
                     amountOfGarmentsSold++;
                     totalIncome += garmentBeingFinished.getPrice();
@@ -50,7 +51,7 @@ public class CEO implements PropertyChangeListener {
                     printSummary();
                 }
                 default -> {
-                    System.out.println("Unknoen event " + evt.getPropertyName());
+                    System.out.println("Unknown event " + evt.getPropertyName());
                 }
             }
         }

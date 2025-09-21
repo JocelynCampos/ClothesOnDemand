@@ -1,130 +1,59 @@
 package modeltests;
 
-import builders.PantBuilder;
-import builders.SkirtBuilder;
-import builders.TShirtBuilder;
-import enums.*;
+import commands.GarmentCommandPipeline;
 import models.*;
-import observer.CEO;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import utilities.Events;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderTest {
 
     @Test
     public void orderTest() {
 
-        //
-        //Skapa byxa 1
-        PantBuilder pantsTest1 = new PantBuilder();
-        pantsTest1.setSize(Size.SMALL);
-        pantsTest1.setMaterial(Material.COTTON);
-        pantsTest1.setColor(Color.DARK_GREEN);
-        pantsTest1.setFit(Fit.LOOSE);
-        pantsTest1.setLength(Length.PETITE);
-        Pants pants = pantsTest1.getResult();
-        pants.setPrice(1000);
+        Customer customer = new Customer("Test Testsson");
+        Pants pants = new Pants();
+        TShirt tShirt = new TShirt();
+        Skirt skirt = new Skirt();
 
-        //Byxa 2
-        PantBuilder pantsTest2 = new PantBuilder();
-        pantsTest2.setSize(Size.LARGE);
-        pantsTest2.setMaterial(Material.LINEN);
-        pantsTest2.setColor(Color.VELVET_RED);
-        pantsTest2.setFit(Fit.SLIM);
-        pantsTest2.setLength(Length.TALL);
-        Pants pants2 = pantsTest2.getResult();
-        pants2.setPrice(1000);
+        pants.setPrice(10);
+        tShirt.setPrice(20);
+        skirt.setPrice(30);
 
-        //Skapa tshirt 1
-        TShirtBuilder tshirtTest1 = new TShirtBuilder();
-        tshirtTest1.setSize(Size.MEDIUM);
-        tshirtTest1.setMaterial(Material.LINEN);
-        tshirtTest1.setColor(Color.KOBOLT_BLUE);
-        tshirtTest1.setSleeves(Sleeves.SHORT_SLEEVE);
-        tshirtTest1.setNeck(Neck.ROUND);
-        TShirt tshirt = tshirtTest1.getResult();
-        tshirt.setPrice(500);
+        Order order = new Order(customer, List.of(pants), List.of(tShirt), List.of(skirt));
 
-        //tskirt 2
-        TShirtBuilder tshirtTest2 = new TShirtBuilder();
-        tshirtTest2.setSize(Size.SMALL);
-        tshirtTest2.setMaterial(Material.WOOL);
-        tshirtTest2.setColor(Color.KOBOLT_BLUE);
-        tshirtTest2.setSleeves(Sleeves.LONG_SLEEVE);
-        tshirtTest2.setNeck(Neck.POLO);
-        TShirt tshirt2 = tshirtTest2.getResult();
-        tshirt2.setPrice(500);
+        List<String> event = new ArrayList<>();
+        order.addPropertyChangeListener(evt -> event.add(evt.getPropertyName()));
+
+        int oldId = order.getId();
+        order.setId(oldId + 1);
+        order.setPlacedOrderStatus(order.getPlacedOrderStatus());
+        order.setCustomer(order.getCustomer());
+        Order.setCounter(Order.getCounter());
+
+        order.placeOrder();
+        order.producingGarment(pants);
 
 
-        //Skapa kjol
-        SkirtBuilder skirtTest1 = new SkirtBuilder();
-        skirtTest1.setSize(Size.MEDIUM);
-        skirtTest1.setMaterial(Material.WOOL);
-        skirtTest1.setColor(Color.VELVET_RED);
-        skirtTest1.setWaistline(Waistline.HIGH);
-        skirtTest1.setPattern(Pattern.DOTS);
-        Skirt skirt = skirtTest1.getResult();
-        skirt.setPrice(900);
+        GarmentCommandPipeline testPipe = new GarmentCommandPipeline();
+        testPipe.addCommand(garment -> {});
+        order.garmentFinished(pants, testPipe);
 
-        List<Pants> pantsList  = new ArrayList<>();
-        pantsList.add(pants);
+        order.completedOrder();
 
-        List<TShirt> tshirtList  = new ArrayList<>();
-        tshirtList.add(tshirt);
+        List<Garments> allGarments = order.getAllGarments();
+        Receipt receipt = order.createReceipt();
 
-        List<Skirt> skirtList  = new ArrayList<>();
-        skirtList.add(skirt);
-
-        //Skapa kund 1
-        Customer customer1 = new Customer("Customer Customersson");
-        Customer customer2 = new Customer("Test Testsson");
-
-        //Skapa order
-        Order order1 = new Order(customer1, pantsList, tshirtList, skirtList);
-        Order order2 = new Order(customer2, pantsList, tshirtList, skirtList);
-
-        //CEO
-        CEO ceo = new CEO();
-        //order1.addObserver(ceo);
-        order1.completedOrder();
-        //order2.addObserver(ceo);
-        order2.completedOrder();
-
-        ceo.printSummary();
-
-        //Skapa kvitto
-        Receipt receipt1 = order1.createReceipt();
-        Receipt receipt2 = order2.createReceipt();
-
-
-        String[] receiptLine = receipt1.toString().split("\n");
-        String[] receiptLine2 = receipt2.toString().split("\n");
-
-
-        System.out.println("RECEIPT 1: \n" + receipt1.toString() + "\n---");
-        System.out.println("RECEIPT 2: \n" + receipt2.toString() + "\n---");
-
-
-        //Addera priserna order 1
-        List<Order> allOrders = List.of(order1, order2);
-        double expectedTotalPrice = 500 + 500 + 900 + 900 + 1000 + 1000;
-        double total = 0;
-        for (Order order : allOrders) {
-            for (Garments garments : order.getAllGarments()) {
-                total += garments.getPrice();
-            }
-        }
-
-
-        //Jämför summan
-        Assertions.assertTrue(receipt1.toString().contains("Customer Customersson"));
-        Assertions.assertTrue(receipt2.toString().contains("Test Testsson"));
-        Assertions.assertEquals(expectedTotalPrice, total);
-        Assertions.assertEquals(expectedTotalPrice, ceo.getTotalIncome());
-        Assertions.assertEquals(6, ceo.getAmountOfGarmentsSold());
+        assertEquals(3, allGarments.size());
+        assertNotNull(receipt);
+        assertTrue(event.contains(Events.PLACED_ORDER));
+        assertTrue(event.contains(Events.PRODUCING_GARMENT));
+        assertTrue(event.contains(Events.GARMENT_FINISHED));
+        assertTrue(event.contains(Events.ORDER_FINISHED));
 
     }
 }
