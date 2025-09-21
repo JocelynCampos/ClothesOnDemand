@@ -2,10 +2,10 @@ package interfaces;
 
 import enums.*;
 
-public interface BaseGarmentInterface {
+public interface BaseGarmentInterface<T extends BaseGarmentInterface<T>> {
 
     //Shared attributes
-    void setSize(Size size);
-    void setMaterial(Material material);
-    void setColor(Color color);
+    T setSize(Size size);
+    T setMaterial(Material material);
+    T setColor(Color color);
 }

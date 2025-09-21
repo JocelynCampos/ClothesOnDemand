@@ -1,5 +1,8 @@
 package org.example.clothesondemand;
 
+import commands.GarmentCommandPipeline;
+import commands.PatternCommand;
+import commands.WaistlineCommand;
 import enums.*;
 import enums.Color;
 import javafx.application.Application;
@@ -11,8 +14,6 @@ import models.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.TextArea;
 import java.io.IOException;
@@ -28,151 +29,259 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        List<Pants> pants = List.of(new Pants());
-        List<TShirt> tShirts = List.of(new TShirt());
-        List<Skirt> skirts = List.of(new Skirt());
 
         TabPane tabPane = new TabPane();
 
         //Skapar tom order
         order = new Order(null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-
+        order.addPropertyChangeListener(new observer.CEO());
 
         //Label för orderstatus
         orderStatusLabel = new Label("Order status: " + order.getPlacedOrderStatus());
 
         /*****************BYXOR*******************************************/
         Label pantsLabel = new Label("Create pants");
-        //Storlek, Material, Färg, PassForm, Längd
+
+        //Builder - Storlek, Material, Färg
         ComboBox<Size> pantsSizeComboBox = createSizeComboBox();
-        pantsSizeComboBox.setVisible(false);
         ComboBox<Material> pantsMaterialComboBox = createMaterialComboBox();
-        pantsMaterialComboBox.setVisible(false);
         ComboBox<Color> pantsColorComboBox = createColorComboBox();
-        pantsColorComboBox.setVisible(false);
+
+        //Command - Fit & Length
         ComboBox<Fit> pantsFitComboBox = createFitComboBox();
-        pantsFitComboBox.setVisible(false);
         ComboBox<Length> pantsLengthComboBox = createLengthComboBox();
-        pantsLengthComboBox.setVisible(false);
+
+
+        VBox commandBoxPant = new VBox(10, new Label("Details"), pantsFitComboBox, pantsLengthComboBox);
+        commandBoxPant.setVisible(false);
+        commandBoxPant.setManaged(false);
+
+        final Pants [] currentPants = new Pants[1];
 
         Button addPantsButton = new Button("Add pants");
         addPantsButton.setOnAction(actionEvent -> {
-            pantsSizeComboBox.setVisible(true);
-            pantsMaterialComboBox.setVisible(true);
-            pantsColorComboBox.setVisible(true);
-            pantsFitComboBox.setVisible(true);
-            pantsLengthComboBox.setVisible(true);
+            if (!commandBoxPant.isVisible()) {
+                if (pantsSizeComboBox.getValue() == null
+                        || pantsMaterialComboBox.getValue() == null
+                        || pantsColorComboBox.getValue() == null) {
+                    System.out.println("Please choose size, material and color to proceed.");
+                    return;
+                }
 
-            if (pantsSizeComboBox.getValue() != null && pantsMaterialComboBox.getValue() != null
-                    && pantsColorComboBox.getValue() != null && pantsFitComboBox.getValue() != null
-                    && pantsLengthComboBox.getValue() != null) {
-                Pants pant = new Pants();
-                pant.setSize(pantsSizeComboBox.getValue());
-                pant.setMaterial(pantsMaterialComboBox.getValue());
-                pant.setColor(pantsColorComboBox.getValue());
-                pant.setFit(pantsFitComboBox.getValue());
-                pant.setLength(pantsLengthComboBox.getValue());
-                pant.setPrice(1200);
+                Pants pant = new builders.PantBuilder()
+                        .setSize(pantsSizeComboBox.getValue())
+                        .setMaterial(pantsMaterialComboBox.getValue())
+                        .setColor(pantsColorComboBox.getValue())
+                        .getResult();
 
-                order.getPantsList().add(pant);
-                System.out.println("Pants added to the order!");
-            } else {
-                System.out.println("Please fill all the boxes before adding a pair of pants into your shoppingbag.");
+                pant.setPrice(1000);
+                currentPants[0] = pant;
+
+                commandBoxPant.setVisible(true);
+                commandBoxPant.setManaged(true);
+
+                pantsSizeComboBox.setDisable(true);
+                pantsMaterialComboBox.setDisable(true);
+                pantsColorComboBox.setDisable(true);
+
+                System.out.println("Base Created. Choose Fit and Length. Then click 'Add pants' again to proceed");
+                return;
             }
+
+            if (pantsFitComboBox.getValue() == null || pantsLengthComboBox.getValue() == null) {
+                System.out.println("Choose Fit and Length.");
+                return;
+            }
+            commands.GarmentCommandPipeline pantPipe = new commands.GarmentCommandPipeline()
+                    .addCommand(new commands.FitCommand(pantsFitComboBox.getValue()))
+                    .addCommand(new commands.LengthCommand(pantsLengthComboBox.getValue()));
+
+            order.produceGarment(currentPants[0], pantPipe);
+            order.getPantsList().add(currentPants[0]);
+            System.out.println("Pants added to the order!");
+
+            currentPants[0] = null;
+            pantsSizeComboBox.setDisable(false);
+            pantsMaterialComboBox.setDisable(false);
+            pantsColorComboBox.setDisable(false);
+
+            pantsSizeComboBox.setValue(null);
+            pantsMaterialComboBox.setValue(null);
+            pantsColorComboBox.setValue(null);
+
+            pantsFitComboBox.setValue(null);
+            pantsLengthComboBox.setValue(null);
+            commandBoxPant.setVisible(false);
+            commandBoxPant.setManaged(false);
         });
-        VBox pantsSection = new VBox(20, pantsLabel, pantsSizeComboBox, pantsMaterialComboBox,
-                pantsColorComboBox, pantsFitComboBox, pantsLengthComboBox, addPantsButton);
+
+        VBox pantsSection = new VBox(20, pantsLabel,
+                pantsSizeComboBox, pantsMaterialComboBox, pantsColorComboBox,
+                addPantsButton, commandBoxPant);
         Tab pantsTab = new Tab("Pants", pantsSection);
 
         /************Tshirt*****************/
 
         Label tShirtLabel = new Label("Create T-Shirt");
-        // Storlek, Material, Färg, Ärmar, Krage
-        ComboBox<Size> tshirtSizeComboBox = createSizeComboBox();
-        tshirtSizeComboBox.setVisible(false);
-        ComboBox<Material> tshirtMaterialComboBox = createMaterialComboBox();
-        tshirtMaterialComboBox.setVisible(false);
-        ComboBox<Color> tshirtColorComboBox = createColorComboBox();
-        tshirtColorComboBox.setVisible(false);
-        ComboBox<Sleeves>  tshirtSleevesComboBox = createSleevesComboBox();
-        tshirtSleevesComboBox.setVisible(false);
-        ComboBox<Neck> tshirtNeckComboBox= createNeckComboBox();
-        tshirtNeckComboBox.setVisible(false);
+
+        //Builder - Storlek, Material, Färg
+        ComboBox<Size> tShirtSizeComboBox = createSizeComboBox();
+        ComboBox<Material> tShirtMaterialComboBox = createMaterialComboBox();
+        ComboBox<Color> tShirtColorComboBox = createColorComboBox();
+
+        //Command
+        ComboBox<Sleeves>  tShirtSleevesComboBox = createSleevesComboBox();
+        ComboBox<Neck> tShirtNeckComboBox = createNeckComboBox();
+
+        VBox commandBoxTshirt = new VBox(10, new Label("Details"), tShirtSleevesComboBox, tShirtNeckComboBox);
+        commandBoxTshirt.setVisible(false);
+        commandBoxTshirt.setManaged(false);
+
+        final TShirt [] currentTShirt = new TShirt[1];
 
         Button addTshirtButton = new Button("Add T-Shirt");
         addTshirtButton.setOnAction(actionEvent -> {
-            tshirtSizeComboBox.setVisible(true);
-            tshirtMaterialComboBox.setVisible(true);
-            tshirtColorComboBox.setVisible(true);
-            tshirtSleevesComboBox.setVisible(true);
-            tshirtNeckComboBox.setVisible(true);
+            if (commandBoxTshirt.isVisible()) {
+                if (tShirtSizeComboBox.getValue() == null
+                        || tShirtMaterialComboBox.getValue() == null
+                        || tShirtColorComboBox.getValue() == null) {
+                    System.out.println("Please choose size, material and color to proceed.");
+                    return;
+                }
 
-            if (tshirtSizeComboBox.getValue() != null && tshirtMaterialComboBox.getValue() != null
-                    && tshirtColorComboBox.getValue() != null && tshirtSleevesComboBox.getValue() != null
-                    && tshirtNeckComboBox.getValue() != null) {
-                TShirt tShirt = new TShirt();
-                tShirt.setSize(tshirtSizeComboBox.getValue());
-                tShirt.setMaterial(tshirtMaterialComboBox.getValue());
-                tShirt.setColor(tshirtColorComboBox.getValue());
-                tShirt.setNeck(tshirtNeckComboBox.getValue());
-                tShirt.setSleeves(tshirtSleevesComboBox.getValue());
-                tShirt.setPrice(600);
+                TShirt tShirt = new builders.TShirtBuilder()
+                        .setSize(tShirtSizeComboBox.getValue())
+                        .setMaterial(tShirtMaterialComboBox.getValue())
+                        .setColor(tShirtColorComboBox.getValue())
+                        .getResult();
+                tShirt.setPrice(500);
+                currentTShirt[0] = tShirt;
 
-                order.gettShirtList().add(tShirt);
-                System.out.println("T-Shirt added to your order!");
-            } else {
-                System.out.println("Please fill in all the boxes before adding a T-Shirt into your shopping bag.");
+                commandBoxTshirt.setVisible(false);
+                commandBoxTshirt.setManaged(false);
+
+                tShirtSizeComboBox.setDisable(true);
+                tShirtMaterialComboBox.setDisable(true);
+                tShirtColorComboBox.setDisable(true);
+
+                System.out.println("Base Created. Choose Fit and Length. Then click 'Add pants' again to proceed");
+                return;
             }
+
+            if (tShirtNeckComboBox.getValue() == null || tShirtSleevesComboBox.getValue() == null) {
+                System.out.println("Choose neck and sleeves.");
+                return;
+            }
+
+            commands.GarmentCommandPipeline tShirtPipe = new commands.GarmentCommandPipeline()
+                    .addCommand(new commands.NeckCommand(tShirtNeckComboBox.getValue()))
+                    .addCommand(new commands.SleevesCommand(tShirtSleevesComboBox.getValue()));
+
+            order.produceGarment(currentTShirt[0], tShirtPipe);
+            order.getTShirtList().add(currentTShirt[0]);
+            System.out.println("T-Shirt added to the order!");
+
+            currentTShirt[0] = null;
+            tShirtSizeComboBox.setDisable(false);
+            tShirtMaterialComboBox.setDisable(false);
+            tShirtColorComboBox.setDisable(false);
+
+            tShirtSizeComboBox.setValue(null);
+            tShirtMaterialComboBox.setValue(null);
+            tShirtColorComboBox.setValue(null);
+
+            tShirtNeckComboBox.setValue(null);
+            tShirtSleevesComboBox.setValue(null);
+
+            commandBoxTshirt.setVisible(false);
+            commandBoxTshirt.setManaged(false);
         });
 
-        VBox tShirtSection = new VBox(20, tShirtLabel, tshirtSizeComboBox, tshirtMaterialComboBox,
-                tshirtColorComboBox, tshirtSleevesComboBox, tshirtNeckComboBox, addTshirtButton);
+        VBox tShirtSection = new VBox(20, tShirtLabel,
+                tShirtSizeComboBox, tShirtMaterialComboBox, tShirtColorComboBox,
+                addTshirtButton, commandBoxTshirt);
         Tab tShirtTab = new Tab("T-Shirt", tShirtSection);
 
         /**************Skirt******************/
 
         Label skirtLabel = new Label("Create skirt");
-        // Skirt : Storlek, Material, Färg, Midja, Mönster
+
+        // Builder
         ComboBox<Size> skirtSizeComboBox = createSizeComboBox();
-        skirtSizeComboBox.setVisible(false);
         ComboBox<Material> skirtMaterialComboBox = createMaterialComboBox();
-        skirtMaterialComboBox.setVisible(false);
         ComboBox<Color> skirtColorComboBox = createColorComboBox();
-        skirtColorComboBox.setVisible(false);
+
+        //Command
         ComboBox<Waistline> skirtWaistlineComboBox = createWaistlineComboBox();
-        skirtWaistlineComboBox.setVisible(false);
         ComboBox<Pattern> skirtPatternComboBox = createPatternComboBox();
-        skirtPatternComboBox.setVisible(false);
+
+        VBox commandBoxSkirt = new VBox(10, new Label("Details"), skirtPatternComboBox, skirtWaistlineComboBox);
+        commandBoxSkirt.setVisible(false);
+        commandBoxSkirt.setManaged(false);
+
+        final Skirt [] currentSkirt = new Skirt[1];
 
         Button addSkirtButton = new Button("Add Skirt");
         addSkirtButton.setOnAction(actionEvent -> {
-            skirtSizeComboBox.setVisible(true);
-            skirtMaterialComboBox.setVisible(true);
-            skirtColorComboBox.setVisible(true);
-            skirtWaistlineComboBox.setVisible(true);
-            skirtPatternComboBox.setVisible(true);
+            if (!commandBoxSkirt.isVisible()) {
+                if (skirtSizeComboBox.getValue() == null
+                        || skirtMaterialComboBox.getValue() == null
+                        || skirtColorComboBox.getValue() == null) {
+                    System.out.println("Please choose size, material and color to proceed.");
+                    return;
+                }
 
-            if (skirtSizeComboBox.getValue() != null && skirtMaterialComboBox.getValue() != null
-            && skirtColorComboBox.getValue() != null && skirtWaistlineComboBox.getValue() != null
-            && skirtPatternComboBox.getValue() != null) {
-                Skirt skirt = new Skirt();
-                skirt.setSize(skirtSizeComboBox.getValue());
-                skirt.setMaterial(skirtMaterialComboBox.getValue());
-                skirt.setColor(skirtColorComboBox.getValue());
-                skirt.setWaistline(skirtWaistlineComboBox.getValue());
-                skirt.setPattern(skirtPatternComboBox.getValue());
-                skirt.setPrice(800);
+                Skirt skirt = new builders.SkirtBuilder()
+                        .setSize(skirtSizeComboBox.getValue())
+                        .setMaterial(skirtMaterialComboBox.getValue())
+                        .setColor(skirtColorComboBox.getValue())
+                        .getResult();
+                skirt.setPrice(600);
+                currentSkirt[0] = skirt;
 
-                order.getSkirtList().add(skirt);
-                System.out.println("Skirt added to your order.");
-            } else {
-                System.out.println("Please fill in all the boxes before adding a skirt into your shopping bag.");
+                commandBoxSkirt.setVisible(false);
+                commandBoxSkirt.setManaged(false);
+
+                skirtSizeComboBox.setDisable(true);
+                skirtMaterialComboBox.setDisable(true);
+                skirtColorComboBox.setDisable(true);
+
+                System.out.println("Base Created. Choose Fit and Length. Then click 'Add pants' again to proceed");
+                return;
             }
+
+            if (skirtPatternComboBox.getValue() == null || skirtWaistlineComboBox.getValue() == null) {
+                System.out.println("Choose neck and sleeves.");
+                return;
+            }
+
+            commands.GarmentCommandPipeline skirtPipe = new commands.GarmentCommandPipeline()
+                    .addCommand(new commands.PatternCommand(skirtPatternComboBox.getValue()))
+                    .addCommand(new commands.WaistlineCommand(skirtWaistlineComboBox.getValue()));
+
+            order.produceGarment(currentSkirt[0], skirtPipe);
+            order.getSkirtList().add(currentSkirt[0]);
+            System.out.println("Skirt added to your order!");
+
+            currentSkirt[0] = null;
+            skirtSizeComboBox.setDisable(false);
+            skirtMaterialComboBox.setDisable(false);
+            skirtColorComboBox.setDisable(false);
+
+            skirtSizeComboBox.setValue(null);
+            skirtMaterialComboBox.setValue(null);
+            skirtColorComboBox.setValue(null);
+
+            skirtPatternComboBox.setValue(null);
+            skirtWaistlineComboBox.setValue(null);
+            commandBoxSkirt.setVisible(false);
+            commandBoxSkirt.setManaged(false);
         });
 
 
-        VBox skirtSection = new VBox(20, skirtLabel, skirtSizeComboBox, skirtMaterialComboBox,
-                skirtColorComboBox, skirtWaistlineComboBox, skirtPatternComboBox, addSkirtButton);
+        VBox skirtSection = new VBox(20, skirtLabel,
+                skirtSizeComboBox, skirtMaterialComboBox, skirtColorComboBox,
+                addSkirtButton, commandBoxSkirt);
 
         Tab skirtTab = new Tab("Skirt", skirtSection);
 
@@ -202,9 +311,9 @@ public class HelloApplication extends Application {
                 order.setCustomer(customer);
 
                 System.out.println("Customer: " + customer.getName() + " saved.");
-                System.out.println("Customers adress: " + customer.getAddress() + " mail: " + customer.getMail());
+                System.out.println("Customers adress: " + customer.getAddress() + "\nMail: " + customer.getMail());
             } else {
-                System.out.println("All fields need to be filed before proceeding.");
+                System.out.println("All fields need to be filled before proceeding.");
             }
         });
 
@@ -237,10 +346,16 @@ public class HelloApplication extends Application {
         //Spara beställning knapp
         Button completeOrderButton = new Button("Complete order");
         completeOrderButton.setOnAction(actionEvent -> {
-            order.completedOrder();
-            orderStatusLabel.setText("Order Status: " + order.getPlacedOrderStatus());
-            Receipt receipt = order.createReceipt();
-            summaryTextArea.setText(receipt.getFormattedSummary());
+            if (order.getCustomer() != null) {
+                order.completedOrder();
+                orderStatusLabel.setText("Order Status: " + order.getPlacedOrderStatus());
+                Receipt receipt = order.createReceipt();
+                summaryTextArea.setText(receipt.getFormattedSummary());
+            }
+            else {
+                new RuntimeException("Customer can't be null!");
+            }
+
         });
 
 

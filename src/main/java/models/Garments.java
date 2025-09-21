@@ -11,7 +11,7 @@ public abstract class Garments {
     protected Size size;
     protected Material material;
     protected Color color;
-    protected double price;
+    private double price;
 
     public Garments(String name) {
         this.id = idCounter++;

@@ -1,5 +1,9 @@
 package models;
 
+//import commands.GarmentCommandPipeline;
+import commands.GarmentCommandPipeline;
+import utilities.Events;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -9,43 +13,53 @@ public class Order {
     private static int counter = 1;
     private int id;
     private Customer customer;
+
     private List<Pants> pantsList;
     private List<TShirt> tShirtList;
     private List<Skirt> skirtList;
 
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     private String placedOrderStatus;
-    //private String finishedOrderStatus;
 
     public Order (Customer customer, List<Pants> pants, List<TShirt> tShirts, List<Skirt> skirts) {
         this.id = counter++;
         this.customer = customer;
-        this. pantsList = pants;
-        this.tShirtList = tShirts;
-        this.skirtList = skirts;
+        this. pantsList = (pants != null) ? new ArrayList<>(pants): new ArrayList<>();
+        this.tShirtList = (tShirts != null) ? new ArrayList<>(tShirts) : new ArrayList<>();
+        this.skirtList = (skirts != null) ? new ArrayList<>(skirts) : new ArrayList<>();
         this.placedOrderStatus = "Order Created";
+    }
+
+    //Observers
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
+    }
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
     }
 
     public void placeOrder() {
         String oldStatus = this.placedOrderStatus;
         this.placedOrderStatus = "Clothing is being made for: " + customer.getName();
 
-        support.firePropertyChange("Placed Order", oldStatus, this.placedOrderStatus);
+        pcs.firePropertyChange(Events.PLACED_ORDER, oldStatus, this.placedOrderStatus);
+    }
+
+    public void produceGarment(Garments garment, GarmentCommandPipeline pipeline) {
+        pcs.firePropertyChange(Events.PRODUCING_GARMENT, null, garment);
+
+        pipeline.executeAll(garment);
+        pipeline.clear();
+
+        pcs.firePropertyChange(Events.GARMENT_FINISHED, null, garment);
     }
 
     public void completedOrder(){
         String oldStatus = this.placedOrderStatus;
         this.placedOrderStatus = "Order ready for delivery: " + customer.getName();
 
-        support.firePropertyChange("Finished Order", oldStatus, this.placedOrderStatus);
+        pcs.firePropertyChange(Events.ORDER_FINISHED, oldStatus, this.placedOrderStatus);
     }
 
     public List<Garments> getAllGarments() {
@@ -88,7 +102,7 @@ public class Order {
         return pantsList;
     }
 
-    public List<TShirt> gettShirtList() {
+    public List<TShirt> getTShirtList() {
         return tShirtList;
     }
 
@@ -98,5 +112,13 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setPlacedOrderStatus(String placedOrderStatus) {
+        this.placedOrderStatus = placedOrderStatus;
     }
 }

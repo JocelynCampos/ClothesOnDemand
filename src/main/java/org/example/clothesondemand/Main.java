@@ -6,7 +6,6 @@ import controllers.TrafficController;
 import enums.*;
 import models.*;
 import observer.CEO;
-import observer.CEOObserver;
 
 import commands.FitCommand;
 import commands.GarmentCommandPipeline;
@@ -19,17 +18,14 @@ public class Main {
 
         TrafficController trafficController = new TrafficController();
 
-        CEOObserver ceoObserver = new CEOObserver();
-        trafficController.addPropertyChangeListener(ceoObserver);
-
         CEO ceo = new CEO();
         trafficController.addPropertyChangeListener(ceo);
 
         //Pants
         GarmentCommandPipeline pantsPipeline = new GarmentCommandPipeline();
         Pants pants = new Pants();
-        FitCommand fitCommand = new FitCommand(Fit.LOOSE, trafficController.getPropertyChangeSupport()); //In Production
-        LengthCommand lengthCommand = new LengthCommand(Length.PETITE, trafficController.getPropertyChangeSupport()); //Produced
+        FitCommand fitCommand = new FitCommand(Fit.LOOSE);
+        LengthCommand lengthCommand = new LengthCommand(Length.PETITE);
         pantsPipeline.addCommand(fitCommand);
         pantsPipeline.addCommand(lengthCommand);
         pantsPipeline.executeAll(pants);
@@ -38,8 +34,8 @@ public class Main {
         //Tshirt
         GarmentCommandPipeline tshirtPipeline = new GarmentCommandPipeline();
         TShirt tshirt = new TShirt();
-        NeckCommand neckCommand = new NeckCommand(Neck.ROUND, trafficController.getPropertyChangeSupport()); //In Production
-        SleevesCommand sleevesCommand = new SleevesCommand(Sleeves.LONG_SLEEVE, trafficController.getPropertyChangeSupport()); //Produced
+        NeckCommand neckCommand = new NeckCommand(Neck.ROUND);
+        SleevesCommand sleevesCommand = new SleevesCommand(Sleeves.LONG_SLEEVE);
         tshirtPipeline.addCommand(neckCommand);
         tshirtPipeline.addCommand(sleevesCommand);
         tshirtPipeline.executeAll(tshirt);
@@ -48,8 +44,8 @@ public class Main {
         //Skirt
         GarmentCommandPipeline skirtPipeline = new GarmentCommandPipeline();
         Skirt skirt = new Skirt();
-        WaistlineCommand waistlineCommand = new WaistlineCommand(Waistline.HIGH, trafficController.getPropertyChangeSupport());
-        PatternCommand patternCommand = new PatternCommand(Pattern.DOTS, trafficController.getPropertyChangeSupport());
+        WaistlineCommand waistlineCommand = new WaistlineCommand(Waistline.HIGH);
+        PatternCommand patternCommand = new PatternCommand(Pattern.DOTS);
         skirtPipeline.addCommand(waistlineCommand);
         skirtPipeline.addCommand(patternCommand);
         skirtPipeline.executeAll(skirt);
@@ -57,8 +53,8 @@ public class Main {
 
         GarmentCommandPipeline skirtPipeline2 = new GarmentCommandPipeline();
         Skirt skirt2 = new Skirt();
-        WaistlineCommand waistlineCommand1 = new WaistlineCommand(Waistline.LOW, trafficController.getPropertyChangeSupport());
-        PatternCommand patternCommand1 = new PatternCommand(Pattern.STRIPE, trafficController.getPropertyChangeSupport());
+        WaistlineCommand waistlineCommand1 = new WaistlineCommand(Waistline.LOW);
+        PatternCommand patternCommand1 = new PatternCommand(Pattern.STRIPE);
         skirtPipeline2.addCommand(waistlineCommand1);
         skirtPipeline2.addCommand(patternCommand1);
         skirtPipeline2.executeAll(skirt2);
@@ -70,7 +66,6 @@ public class Main {
                 List.of(tshirt),
                 List.of(skirt, skirt2));
 
-        order.addPropertyChangeListener(ceoObserver);
         order.addPropertyChangeListener(ceo);
         order.placeOrder();
         order.completedOrder();

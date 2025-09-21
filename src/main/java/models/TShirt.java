@@ -5,7 +5,6 @@ import enums.*;
 public class TShirt extends Garments {
     private Sleeves sleeves;
     private Neck neck;
-    private double price;
 
     public TShirt() {
         super("T-Shirt");

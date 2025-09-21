@@ -2,6 +2,7 @@ package observer;
 
 import models.Garments;
 import models.Order;
+import utilities.Events;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -14,18 +15,47 @@ public class CEO implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
-        if(evt.getNewValue().toString().contains("ready for delivery")) {
-            Order order = (Order) evt.getSource();
-
-            int garments = order.getAllGarments().size();
-            amountOfGarmentsSold += garments;
-
-            double orderTotal = 0;
-            for (Garments garments1 : order.getAllGarments()) {
-                orderTotal += garments1.getPrice();
+        System.out.println("_____________________________________________________________");
+        try {
+            System.out.println("[NOTIFY] Event; " + evt.getPropertyName());
+            if (evt.getNewValue() instanceof Garments garment) {
+                System.out.println(" -> " + garment.getName() + " (#" + garment.getId() + ")");
             }
-            totalIncome += orderTotal;
+
+            switch (evt.getPropertyName()) {
+                case (Events.PLACED_ORDER) -> {
+                    System.out.println("A new order has been placed");
+                }
+                case (Events.PRODUCING_GARMENT) -> {
+                    Garments garmentBeingProduced = (Garments) evt.getNewValue();
+                    System.out.println("Started a production of " + garmentBeingProduced.getName()
+                            + ":" + garmentBeingProduced.getId() + ", " + garmentBeingProduced.getSize() + ", " + garmentBeingProduced.getColor() + ", " + garmentBeingProduced.getMaterial() + ".");
+                }
+                case (Events.GARMENT_FINISHED) -> {
+                    Garments garmentBeingFinished = (Garments) evt.getNewValue();
+                    System.out.println("Garment finished.");
+                    System.out.println("Total price: " + (int) garmentBeingFinished.getPrice() + " kr.");
+
+                    amountOfGarmentsSold++;
+                    totalIncome += garmentBeingFinished.getPrice();
+                }
+                case (Events.ORDER_FINISHED) -> {
+                    Order order = (Order) evt.getSource();
+
+                    double orderTotal = order.getAllGarments()
+                            .stream()
+                            .mapToDouble(Garments::getPrice)
+                            .sum();
+                    System.out.println("Order ready for delivery.\nTotal: " + (int) orderTotal + " kr.");
+                    printSummary();
+                }
+                default -> {
+                    System.out.println("Unknoen event " + evt.getPropertyName());
+                }
+            }
+        }
+        finally {
+            System.out.println("_____________________________________________________________");
         }
     }
 

@@ -9,14 +9,17 @@ import java.util.List;
 public class GarmentCommandPipeline {
     private final List<GarmentCommand> commands = new ArrayList<>();
 
-    public void addCommand(GarmentCommand command) {
-        this.commands.add(command);
+
+    public GarmentCommandPipeline addCommand(GarmentCommand command) {
+        commands.add(command);
+        return this;
     }
 
-    public void executeAll(Garments garments) {
+    public Garments executeAll(Garments garment) {
         for (GarmentCommand command : commands) {
-            command.execute(garments);
+            command.execute(garment);
         }
+        return garment;
     }
 
     public void clear() {

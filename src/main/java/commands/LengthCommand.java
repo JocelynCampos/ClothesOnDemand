@@ -12,25 +12,15 @@ import java.beans.PropertyChangeSupport;
 //For Pants
 public class LengthCommand implements GarmentCommand {
     private final Length length;
-    private final PropertyChangeSupport pcs;
 
-    public LengthCommand(Length length, @Nullable PropertyChangeSupport pcs) {
+    public LengthCommand(Length length) {
         this.length = length;
-        this.pcs = pcs;
     }
     @Override
     public void execute(Garments garment) {
 
         if (garment instanceof PantsOptions pantsOptions) {
-            if (pcs != null) {
-                pcs.firePropertyChange("GarmentInProduction", null, garment);
-            }
-
             pantsOptions.setLength(length);
-            garment.printAttribute("Length", length);
-            if (pcs != null) {
-                pcs.firePropertyChange("GarmentProduced", null, garment);
-            }
         }
     }
 }

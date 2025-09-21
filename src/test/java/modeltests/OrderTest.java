@@ -2,7 +2,7 @@ package modeltests;
 
 import builders.PantBuilder;
 import builders.SkirtBuilder;
-import builders.TshirtBuilder;
+import builders.TShirtBuilder;
 import enums.*;
 import models.*;
 import observer.CEO;
@@ -39,7 +39,7 @@ public class OrderTest {
         pants2.setPrice(1000);
 
         //Skapa tshirt 1
-        TshirtBuilder tshirtTest1 = new TshirtBuilder();
+        TShirtBuilder tshirtTest1 = new TShirtBuilder();
         tshirtTest1.setSize(Size.MEDIUM);
         tshirtTest1.setMaterial(Material.LINEN);
         tshirtTest1.setColor(Color.KOBOLT_BLUE);
@@ -49,7 +49,7 @@ public class OrderTest {
         tshirt.setPrice(500);
 
         //tskirt 2
-        TshirtBuilder tshirtTest2 = new TshirtBuilder();
+        TShirtBuilder tshirtTest2 = new TShirtBuilder();
         tshirtTest2.setSize(Size.SMALL);
         tshirtTest2.setMaterial(Material.WOOL);
         tshirtTest2.setColor(Color.KOBOLT_BLUE);

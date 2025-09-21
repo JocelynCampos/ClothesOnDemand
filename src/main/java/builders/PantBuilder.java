@@ -3,41 +3,33 @@ package builders;
 import enums.*;
 import exception.InvalidGarmentException;
 import interfaces.BaseGarmentInterface;
-import interfaces.PantsOptions;
 import models.Pants;
 
-public class PantBuilder implements BaseGarmentInterface, PantsOptions {
+public class PantBuilder implements BaseGarmentInterface<PantBuilder> {
 
-    private Pants pants = new Pants();
+    private final Pants pants = new Pants();
 
     @Override
-    public void setSize(Size size) {
+    public PantBuilder setSize(Size size) {
         pants.setSize(size);
+        return this;
     }
 
     @Override
-    public void setMaterial(Material material) {
+    public PantBuilder setMaterial(Material material) {
         pants.setMaterial(material);
+        return this;
     }
 
     @Override
-    public void setColor(Color color) {
+    public PantBuilder setColor(Color color) {
         pants.setColor(color);
+        return this;
     }
 
-    @Override
-    public void setFit(Fit fit) {
-        pants.setFit(fit);
-    }
-
-    @Override
-    public void setLength(Length length) {
-        pants.setLength(length);
-    }
 
     public Pants getResult() {
-        if (pants.getSize() == null || pants.getMaterial() == null || pants.getColor() == null
-        || pants.getFit() == null || pants.getLength() == null) {
+        if (pants.getSize() == null || pants.getMaterial() == null || pants.getColor() == null) {
             throw new InvalidGarmentException("All garments must have attributes");
         }
         return pants;

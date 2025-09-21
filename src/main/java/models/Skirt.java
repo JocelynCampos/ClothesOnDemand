@@ -4,7 +4,6 @@ import enums.*;
 public class Skirt extends Garments {
     private Waistline waistline;
     private Pattern pattern;
-    private double price;
 
 
     public Skirt() {

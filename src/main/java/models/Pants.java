@@ -4,7 +4,6 @@ import enums.*;
 public class Pants extends Garments {
     private Fit fit;
     private Length length;
-    private double price;
 
     public Pants() {
         super("Pants");
@@ -29,13 +28,6 @@ public class Pants extends Garments {
     @Override
     public String toString() {
         return super.toString();
-    }
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
 }
